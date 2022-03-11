@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Alchemy.WebAPI.Models;
+using Alchemy.WebAPI.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Alchemy.WebAPI;
-using Alchemy.DataModel.Entities;
-using Alchemy.WebAPI.Services;
+
+namespace Alchemy.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/mix")]

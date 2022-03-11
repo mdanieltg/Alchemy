@@ -1,8 +1,7 @@
-﻿namespace Alchemy.WebAPI.Models
+﻿namespace Alchemy.WebAPI.Models;
+
+public class Dlc
 {
-    public class Dlc
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
 }

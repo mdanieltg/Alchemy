@@ -1,9 +1,8 @@
-﻿namespace Alchemy.DataMigration.Models
+﻿namespace Alchemy.DataMigration.Models;
+
+public enum Dlc
 {
-    public enum Dlc
-    {
-        Dawnguard = 1,
-        Hearthfire,
-        Dragonborn
-    }
+    Dawnguard = 1,
+    Hearthfire,
+    Dragonborn
 }

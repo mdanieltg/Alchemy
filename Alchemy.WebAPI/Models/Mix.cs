@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using Alchemy.WebAPI.Models;
+﻿using Alchemy.WebAPI.Models;
 
-namespace Alchemy.WebAPI
+namespace Alchemy.WebAPI;
+
+public class Mix
 {
-    public class Mix
-    {
-        public EffectLimited Effect { get; set; }
-        public IEnumerable<IngredientLimited> Ingredients { get; set; }
-    }
+    public EffectLimited Effect { get; set; }
+    public IEnumerable<IngredientLimited> Ingredients { get; set; }
 }
