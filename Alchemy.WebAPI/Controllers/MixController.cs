@@ -1,5 +1,4 @@
-﻿using Alchemy.WebAPI.Models;
-using Alchemy.WebAPI.Services;
+﻿using Alchemy.BusinessLogic.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,64 +6,24 @@ namespace Alchemy.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/mix")]
+[Produces("application/json", "application/xml", "text/json", "text/xml")]
 public class MixController : ControllerBase
 {
-    private readonly IAlchemyRepository _repository;
+    private readonly Mixer _mixer;
     private readonly IMapper _mapper;
 
-    public MixController(IAlchemyRepository repository, IMapper mapper)
+    public MixController(Mixer mixer, IMapper mapper)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _mixer = mixer ?? throw new ArgumentNullException(nameof(mixer));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     [HttpGet]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(404)]
-    public ActionResult<IEnumerable<Mix>> Mix(IEnumerable<int> ingredientIds)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<Mix>>> Mix([FromQuery] IEnumerable<int> id)
     {
-        var mixes = new HashSet<Mix>();
-        var ingredients = new HashSet<Ingredient>();
-        var effectIngredientsDictionary = new Dictionary<Effect, HashSet<Ingredient>>();
-        var allIngredients = _repository.GetIngredients().ToHashSet();
-
-        foreach (var ingredientId in ingredientIds)
-        {
-            var ingredient = allIngredients.FirstOrDefault(ingredient => ingredient.Id == ingredientId);
-
-            if (ingredient != null)
-            {
-                ingredients.Add(ingredient);
-            }
-        }
-
-        foreach (var ingredient in ingredients)
-        {
-            foreach (var effect in ingredient.Effects)
-            {
-                if (effectIngredientsDictionary.ContainsKey(effect))
-                {
-                    effectIngredientsDictionary[effect].Add(ingredient);
-                }
-                else
-                {
-                    effectIngredientsDictionary.Add(effect, new HashSet<Ingredient>() { ingredient });
-                }
-            }
-        }
-
-        foreach (var keyValuePair in effectIngredientsDictionary
-            .Where(pair => pair.Value.Count > 1)
-            .OrderByDescending(pair => pair.Value.Count))
-        {
-            mixes.Add(new Mix
-            {
-                Effect = _mapper.Map<Alchemy.WebAPI.Models.EffectLimited>(keyValuePair.Key),
-                Ingredients = _mapper.Map<IEnumerable<Alchemy.WebAPI.Models.IngredientLimited>>(keyValuePair.Value)
-            });
-        }
-
-        return Ok(mixes);
+        var mixes = await _mixer.Mix(id);
+        return Ok(_mapper.Map<IEnumerable<Mix>>(mixes));
     }
 }

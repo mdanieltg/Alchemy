@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Alchemy.BusinessLogic\Alchemy.BusinessLogic.csproj" />
     <ProjectReference Include="..\Alchemy.DataModel\Alchemy.DataModel.csproj" />
   </ItemGroup>
 

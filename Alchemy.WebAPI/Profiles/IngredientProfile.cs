@@ -1,4 +1,4 @@
-﻿using Alchemy.WebAPI.Models;
+﻿using Alchemy.DataModel.Entities;
 using AutoMapper;
 
 namespace Alchemy.WebAPI.Profiles;
@@ -7,8 +7,7 @@ public class IngredientProfile : Profile
 {
     public IngredientProfile()
     {
-        CreateMap<DataModel.Entities.Ingredient, Models.Ingredient>()
+        CreateMap<Ingredient, Models.Ingredient>()
             .ForMember(dst => dst.Dlc, conf => conf.MapFrom(src => src.Dlc != null ? src.Dlc.Name : null));
-        CreateMap<DataModel.Entities.Ingredient, IngredientLimited>();
     }
 }
