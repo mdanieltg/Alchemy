@@ -3,7 +3,7 @@ using Alchemy.DataModel.Entities;
 
 namespace Alchemy.BusinessLogic.Services;
 
-public class Mixer
+public class Mixer : IMixer
 {
     private readonly IIngredientsRepository _ingredients;
 

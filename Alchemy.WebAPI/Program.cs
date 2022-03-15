@@ -21,7 +21,7 @@ builder.Services.AddDbContext<AlchemyContext>(options =>
 builder.Services.AddScoped<IDlcRepository, DlcRepository>();
 builder.Services.AddScoped<IEffectsRepository, EffectsRepository>();
 builder.Services.AddScoped<IIngredientsRepository, IngredientsRepository>();
-builder.Services.AddScoped<Mixer>();
+builder.Services.AddScoped<IMixer, Mixer>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-﻿using Alchemy.BusinessLogic.Services;
+﻿using Alchemy.BusinessLogic.Contracts;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +9,10 @@ namespace Alchemy.WebAPI.Controllers;
 [Produces("application/json", "application/xml", "text/json", "text/xml")]
 public class MixController : ControllerBase
 {
-    private readonly Mixer _mixer;
+    private readonly IMixer _mixer;
     private readonly IMapper _mapper;
 
-    public MixController(Mixer mixer, IMapper mapper)
+    public MixController(IMixer mixer, IMapper mapper)
     {
         _mixer = mixer ?? throw new ArgumentNullException(nameof(mixer));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
