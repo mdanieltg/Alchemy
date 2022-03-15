@@ -1,0 +1,38 @@
+﻿@model Ingredient
+
+@{
+    ViewData["Title"] = "Ingrediente";
+}
+
+<h2>@Model.Name</h2>
+<table class="table table-striped">
+    <tr>
+        <th>Peso</th>
+        <td>@Model.Weight</td>
+    </tr>
+    <tr>
+        <th>Valor base</th>
+        <td>@Model.BaseValue</td>
+    </tr>
+    <tr>
+        <th>Obtención</th>
+        <td>@Model.Obtaining</td>
+    </tr>
+    <tr>
+        <th>Efectos</th>
+        <td>
+            <ul>
+                @foreach (var effect in Model.Effects)
+                {
+                    <li>
+                        <a asp-controller="Effects" asp-action="Detail" asp-route-effectId="@effect.Id">@effect.Name</a>
+                    </li>
+                }
+            </ul>
+        </td>
+    </tr>
+</table>
+
+
+<a href="#" onclick="window.history.back();" class="btn btn-primary"><i class="bi bi-chevron-left"></i> Volver</a>
+<a asp-action="Index" class="btn btn-secondary">Ingredientes</a>
