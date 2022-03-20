@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable enable
+using System.ComponentModel.DataAnnotations;
 using Alchemy.WebApp.Models;
 
 namespace Alchemy.WebApp.Validation;
