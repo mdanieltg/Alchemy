@@ -1,15 +1,15 @@
 using Alchemy.BusinessLogic.Contracts;
 using Alchemy.BusinessLogic.Services;
 using Alchemy.DataModel;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<AlchemyContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("Default")),
-    ServiceLifetime.Singleton);
+
+var csv = new Alchemy.DataModel.CsvHelper(builder.Configuration);
+var context = await AlchemyContextFactory.CreateContext(csv);
+builder.Services.AddSingleton(context);
 builder.Services.AddScoped<IDlcRepository, DlcRepository>();
 builder.Services.AddScoped<IEffectsRepository, EffectsRepository>();
 builder.Services.AddScoped<IIngredientsRepository, IngredientsRepository>();

@@ -1,29 +1,17 @@
 ﻿using Alchemy.DataModel.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Alchemy.DataModel;
 
-public class AlchemyContext : DbContext
+public class AlchemyContext
 {
-    private const string ConnectionString = "Server=localhost;Database=SkyrimAlchemy;Trusted_Connection=True";
-
-    public AlchemyContext()
+    internal AlchemyContext(HashSet<Dlc> dlcs, HashSet<Effect> effects, HashSet<Ingredient> ingredients)
     {
+        Dlcs = dlcs;
+        Effects = effects;
+        Ingredients = ingredients;
     }
 
-    public AlchemyContext(DbContextOptions<AlchemyContext> options) : base(options)
-    {
-    }
-
-    public DbSet<Dlc> Dlcs { get; set; }
-    public DbSet<Effect> Effects { get; set; }
-    public DbSet<Ingredient> Ingredients { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer(ConnectionString);
-        }
-    }
+    public ICollection<Dlc> Dlcs { get; }
+    public ICollection<Effect> Effects { get; }
+    public ICollection<Ingredient> Ingredients { get; }
 }

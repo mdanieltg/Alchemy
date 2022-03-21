@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alchemy.WebAPI", "Alchemy.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alchemy.DataModel", "Alchemy.DataModel\Alchemy.DataModel.csproj", "{D5CEA403-6D4B-42D9-98E0-BB0295F9DEDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alchemy.DataMigration", "Alchemy.DataMigration\Alchemy.DataMigration.csproj", "{5F18B6D4-F2CE-43C8-8F43-3198220B0665}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alchemy.BusinessLogic", "Alchemy.BusinessLogic\Alchemy.BusinessLogic.csproj", "{0555985C-39E2-4D13-A151-EFD9F7C426A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alchemy.WebApp", "Alchemy.WebApp\Alchemy.WebApp.csproj", "{92CD7370-D960-4FEC-8CE4-D5114BE0D482}"
@@ -27,10 +25,6 @@ Global
 		{D5CEA403-6D4B-42D9-98E0-BB0295F9DEDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5CEA403-6D4B-42D9-98E0-BB0295F9DEDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5CEA403-6D4B-42D9-98E0-BB0295F9DEDF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5F18B6D4-F2CE-43C8-8F43-3198220B0665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F18B6D4-F2CE-43C8-8F43-3198220B0665}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F18B6D4-F2CE-43C8-8F43-3198220B0665}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F18B6D4-F2CE-43C8-8F43-3198220B0665}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0555985C-39E2-4D13-A151-EFD9F7C426A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0555985C-39E2-4D13-A151-EFD9F7C426A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0555985C-39E2-4D13-A151-EFD9F7C426A3}.Release|Any CPU.ActiveCfg = Release|Any CPU

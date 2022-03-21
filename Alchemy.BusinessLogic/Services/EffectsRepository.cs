@@ -1,7 +1,6 @@
 ﻿using Alchemy.BusinessLogic.Contracts;
 using Alchemy.DataModel;
 using Alchemy.DataModel.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Alchemy.BusinessLogic.Services;
 
@@ -16,14 +15,12 @@ public class EffectsRepository : IEffectsRepository
 
     public IEnumerable<Effect> GetAll()
     {
-        return _context.Effects
-            .Include(effect => effect.Ingredients);
+        return _context.Effects;
     }
 
     public Effect Get(int effectId)
     {
         return _context.Effects
-            .Include(effect => effect.Ingredients)
             .FirstOrDefault(effect => effect.Id == effectId);
     }
 }

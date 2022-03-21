@@ -1,7 +1,6 @@
 ﻿using Alchemy.BusinessLogic.Contracts;
 using Alchemy.DataModel;
 using Alchemy.DataModel.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Alchemy.BusinessLogic.Services;
 
@@ -16,16 +15,12 @@ public class IngredientsRepository : IIngredientsRepository
 
     public IEnumerable<Ingredient> GetAll()
     {
-        return _context.Ingredients
-            .Include(ingredient => ingredient.Effects)
-            .Include(ingredient => ingredient.Dlc);
+        return _context.Ingredients;
     }
 
     public Ingredient Get(int ingredientId)
     {
         return _context.Ingredients
-            .Include(ingredient => ingredient.Effects)
-            .Include(ingredient => ingredient.Dlc)
             .FirstOrDefault(ingredient => ingredient.Id == ingredientId);
     }
 }
