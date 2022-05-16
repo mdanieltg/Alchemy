@@ -45,13 +45,18 @@ public class CsvHelper
         {
             HasHeaderRecord = true,
             Delimiter = ",",
-            NewLine = Environment.NewLine
+            NewLine = "\n"
         };
     }
 
     public async IAsyncEnumerable<DlcDto> GetDlcs()
     {
-        using var streamReader = new StreamReader(_dlcFile);
+        using var httpClient = new HttpClient();
+        var response = await httpClient.GetAsync(_dlcFile);
+        response.EnsureSuccessStatusCode();
+
+        var stream = await response.Content.ReadAsStreamAsync();
+        using var streamReader = new StreamReader(stream);
         using var csvReader = new CsvReader(streamReader, _configuration);
 
         var dlcs = csvReader.GetRecordsAsync<DlcDto>();
@@ -63,7 +68,12 @@ public class CsvHelper
 
     public async IAsyncEnumerable<EffectDto> GetEffects()
     {
-        using var streamReader = new StreamReader(_effectsFile);
+        using var httpClient = new HttpClient();
+        var response = await httpClient.GetAsync(_effectsFile);
+        response.EnsureSuccessStatusCode();
+
+        var stream = await response.Content.ReadAsStreamAsync();
+        using var streamReader = new StreamReader(stream);
         using var csvReader = new CsvReader(streamReader, _configuration);
 
         var effects = csvReader.GetRecordsAsync<EffectDto>();
@@ -75,7 +85,12 @@ public class CsvHelper
 
     public async IAsyncEnumerable<IngredientDto> GetIngredients()
     {
-        using var streamReader = new StreamReader(_ingredientsFile);
+        using var httpClient = new HttpClient();
+        var response = await httpClient.GetAsync(_ingredientsFile);
+        response.EnsureSuccessStatusCode();
+
+        var stream = await response.Content.ReadAsStreamAsync();
+        using var streamReader = new StreamReader(stream);
         using var csvReader = new CsvReader(streamReader, _configuration);
 
         var ingredients = csvReader.GetRecordsAsync<IngredientDto>();
@@ -87,7 +102,12 @@ public class CsvHelper
 
     public async IAsyncEnumerable<IngredientEffects> GetIngredientEffects()
     {
-        using var streamReader = new StreamReader(_ingredientEffectsFile);
+        using var httpClient = new HttpClient();
+        var response = await httpClient.GetAsync(_ingredientEffectsFile);
+        response.EnsureSuccessStatusCode();
+
+        var stream = await response.Content.ReadAsStreamAsync();
+        using var streamReader = new StreamReader(stream);
         using var csvReader = new CsvReader(streamReader, _configuration);
 
         var ingredientEffects = csvReader.GetRecordsAsync<IngredientEffects>();
