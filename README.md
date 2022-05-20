@@ -21,8 +21,10 @@ Si lo que quieres es probarlo en tu propio equipo, entonces sigue los siguientes
 1. Descarga el [SDK de .NET 6.0](https://dotnet.microsoft.com/en-us/download).
 2. Clona este repositorio.
 3. En una consola o terminal accede al directorio raíz del repositorio y luego ejecuta los comandos:
-    1. `dotnet build`.
-    2. `dotnet run`.
+    1. `dotnet build`
+	2. `cd Alchemy.WebApp`
+    3. `dotnet run`
+	4. Abre en el navegador de tu preferencia la dirección https://localhost:7183
 4. ¡Disfruta de la aplicación!
 
 Si cuentas con [Visual Studio](https://visualstudio.microsoft.com/es/) o [Rider](https://www.jetbrains.com/rider/)
