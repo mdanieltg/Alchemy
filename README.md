@@ -12,7 +12,7 @@ uno o más efectos.
 ### Versión hospedada en Azure
 
 Si deseas probar la aplicación en tiempo real, puedes ir
-a [https://mdanieltg-alchemy.azurewebsites.net](https://mdanieltg-alchemy.azurewebsites.net/).
+a [https://alchemy.quicktortoise.com.mx](https://alchemy.quicktortoise.com.mx/).
 
 ### Probar localmente
 
