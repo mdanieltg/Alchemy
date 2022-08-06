@@ -9,6 +9,6 @@ public class Ingredient
     public string Obtaining { get; set; } = null!;
     public int? DlcId { get; set; }
 
-    public Dlc Dlc { get; set; } = null!;
+    public Dlc? Dlc { get; set; }
     public ICollection<Effect> Effects { get; set; } = new HashSet<Effect>();
 }

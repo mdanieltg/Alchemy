@@ -7,6 +7,6 @@ public class Ingredient
     public double Weight { get; set; }
     public int BaseValue { get; set; }
     public string Obtaining { get; set; } = null!;
-    public string Dlc { get; set; } = null!;
+    public string? Dlc { get; set; }
     public IEnumerable<EffectLimited> Effects { get; set; } = null!;
 }

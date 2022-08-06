@@ -3,27 +3,29 @@
 
 <h2>Mezclador</h2>
 
-<datalist id="readable-ingredients"></datalist>
-<input id="ingredients" type="hidden" value="@ViewBag.IngredientsAsJson">
-
+<input type="hidden" id="ingredientsAsJson" value="@ViewBag.IngredientsAsJson">
 <div class="mb-3">
-    <label class="form-label" for="ingredients-input">Ingredientes disponibles</label>
-    <input class="form-control" id="ingredients-input" list="readable-ingredients">
+    <label class="form-label" for="search-input">Filtrar ingredientes</label>
+    <input class="form-control" id="search-input">
 
     <div class="mt-1">
-        <button class="btn btn-success" id="add-ingredient">Agregar</button>
+        <button class="btn btn-outline-primary" id="filter">Filtrar</button>
+        <button class="btn btn-outline-secondary" id="reset-filter">Limpiar filtro</button>
     </div>
 </div>
 
-<form method="post" asp-controller="Mixer" asp-action="Index">
+<form method="post" asp-controller="Mixer">
+    @Html.AntiForgeryToken()
+
     <div class="mb-3">
-        <label class="form-label" asp-for="Ingredients">Ingredientes seleccionados</label>
-        <select class="form-select" asp-for="Ingredients"></select>
+        <label class="form-label" asp-for="Ingredients">Ingredientes</label>
+        <select class="form-select" asp-for="Ingredients" multiple></select>
     </div>
     <div class="mb-3 text-danger" asp-validation-summary="All"></div>
 
     <div class="mt-1">
-        <input type="submit" class="btn btn-primary" value="¡Mezclar!">
+        <input type="submit" id="submit" class="btn btn-primary" value="¡Mezclar!">
+        <input type="reset" class="btn btn-outline-warning" value="Limpiar selección">
     </div>
 </form>
 
