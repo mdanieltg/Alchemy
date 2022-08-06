@@ -18,7 +18,7 @@ public class IngredientsRepository : IIngredientsRepository
         return _context.Ingredients;
     }
 
-    public Ingredient Get(int ingredientId)
+    public Ingredient? Get(int ingredientId)
     {
         return _context.Ingredients
             .FirstOrDefault(ingredient => ingredient.Id == ingredientId);

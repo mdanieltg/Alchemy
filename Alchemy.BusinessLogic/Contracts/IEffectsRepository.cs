@@ -5,5 +5,5 @@ namespace Alchemy.BusinessLogic.Contracts;
 public interface IEffectsRepository
 {
     IEnumerable<Effect> GetAll();
-    Effect Get(int effectId);
+    Effect? Get(int effectId);
 }

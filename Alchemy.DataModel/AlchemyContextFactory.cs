@@ -59,7 +59,7 @@ public class AlchemyContextFactory
                 Weight = ingredient.Weight,
                 Obtaining = ingredient.Obtaining,
                 DlcId = ingredient.DlcId,
-                Dlc = dlcs.FirstOrDefault(dlc => dlc.Id == ingredient.DlcId)
+                Dlc = dlcs.First(dlc => dlc.Id == ingredient.DlcId)
             });
         }
 

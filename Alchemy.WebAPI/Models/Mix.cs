@@ -4,6 +4,6 @@ namespace Alchemy.WebAPI;
 
 public class Mix
 {
-    public EffectLimited Effect { get; set; }
-    public IEnumerable<IngredientLimited> Ingredients { get; set; }
+    public EffectLimited Effect { get; set; } = null!;
+    public IEnumerable<IngredientLimited> Ingredients { get; set; } = null!;
 }

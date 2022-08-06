@@ -18,7 +18,7 @@ public class DlcRepository : IDlcRepository
         return _context.Dlcs;
     }
 
-    public Dlc Get(int dlcId)
+    public Dlc? Get(int dlcId)
     {
         return _context.Dlcs
             .FirstOrDefault(dlc => dlc.Id == dlcId);

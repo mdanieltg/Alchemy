@@ -5,5 +5,5 @@ namespace Alchemy.BusinessLogic.Contracts;
 public interface IDlcRepository
 {
     IEnumerable<Dlc> GetAll();
-    Dlc Get(int dlcId);
+    Dlc? Get(int dlcId);
 }

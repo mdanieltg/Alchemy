@@ -18,7 +18,7 @@ public class EffectsRepository : IEffectsRepository
         return _context.Effects;
     }
 
-    public Effect Get(int effectId)
+    public Effect? Get(int effectId)
     {
         return _context.Effects
             .FirstOrDefault(effect => effect.Id == effectId);
