@@ -15,7 +15,8 @@ public class IngredientsRepository : IIngredientsRepository
 
     public IEnumerable<Ingredient> GetAll()
     {
-        return _context.Ingredients;
+        return _context.Ingredients
+            .OrderBy(i => i.Name);
     }
 
     public Ingredient? Get(int ingredientId)

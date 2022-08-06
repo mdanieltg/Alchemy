@@ -15,7 +15,8 @@ public class EffectsRepository : IEffectsRepository
 
     public IEnumerable<Effect> GetAll()
     {
-        return _context.Effects;
+        return _context.Effects
+            .OrderBy(e => e.Name);
     }
 
     public Effect? Get(int effectId)
