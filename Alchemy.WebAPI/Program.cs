@@ -1,6 +1,7 @@
 using Alchemy.BusinessLogic.Contracts;
 using Alchemy.BusinessLogic.Services;
 using Alchemy.DataModel;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,11 @@ builder.Services.AddScoped<IMixer, Mixer>();
 
 var app = builder.Build();
 
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 // Configure HTTP req. pipeline
 if (app.Environment.IsDevelopment())
 {
@@ -31,8 +37,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Alchemy.WebAPI v1"));
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
