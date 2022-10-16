@@ -1,4 +1,5 @@
 ﻿using Alchemy.BusinessLogic.Services;
+using Alchemy.WebAPI.Helpers;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,12 +19,14 @@ public class MixController : ControllerBase
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    [HttpGet]
+    [HttpGet("{ids}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<Mix>>> Mix([FromQuery] IEnumerable<int> id)
+    public async Task<ActionResult<IEnumerable<Mix>>> Mix(
+        [FromRoute] [ModelBinder(BinderType = typeof(ArrayModelBinder))]
+        IEnumerable<int> ids)
     {
-        var mixes = await _mixer.Mix(id);
+        var mixes = await _mixer.Mix(ids);
         return Ok(_mapper.Map<IEnumerable<Mix>>(mixes));
     }
 }
