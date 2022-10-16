@@ -1,5 +1,4 @@
-﻿using Alchemy.BusinessLogic.Contracts;
-using Alchemy.DataModel;
+﻿using Alchemy.DataModel;
 using Alchemy.DataModel.Entities;
 
 namespace Alchemy.BusinessLogic.Services;
@@ -13,7 +12,7 @@ public class DlcRepository : IDlcRepository
         _context = alchemyContext ?? throw new ArgumentNullException(nameof(alchemyContext));
     }
 
-    public IEnumerable<Dlc> GetAll()
+    public IEnumerable<Dlc> List()
     {
         return _context.Dlcs;
     }

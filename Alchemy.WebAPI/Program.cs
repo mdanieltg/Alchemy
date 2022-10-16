@@ -1,4 +1,3 @@
-using Alchemy.BusinessLogic.Contracts;
 using Alchemy.BusinessLogic.Services;
 using Alchemy.DataModel;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -18,8 +17,9 @@ var csv = new Alchemy.DataModel.CsvHelper(builder.Configuration);
 var context = await AlchemyContextFactory.CreateContext(csv);
 builder.Services.AddSingleton(context);
 builder.Services.AddScoped<IDlcRepository, DlcRepository>();
-builder.Services.AddScoped<IEffectsRepository, EffectsRepository>();
 builder.Services.AddScoped<IIngredientsRepository, IngredientsRepository>();
+builder.Services.AddScoped<IPagedEffectsRepository, Alchemy.WebAPI.Services.EffectsRepository>();
+builder.Services.AddScoped<IPagedIngredientsRepository, Alchemy.WebAPI.Services.IngredientsRepository>();
 builder.Services.AddScoped<IMixer, Mixer>();
 
 var app = builder.Build();

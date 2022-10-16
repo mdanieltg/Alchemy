@@ -1,4 +1,4 @@
-﻿using Alchemy.BusinessLogic.Contracts;
+﻿using Alchemy.BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Alchemy.WebApp.Controllers;
@@ -15,7 +15,7 @@ public class EffectsController : Controller
 
     public IActionResult Index()
     {
-        var effects = _effects.GetAll();
+        var effects = _effects.List();
         return View(effects);
     }
 

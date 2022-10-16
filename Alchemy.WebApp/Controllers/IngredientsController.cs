@@ -1,4 +1,4 @@
-﻿using Alchemy.BusinessLogic.Contracts;
+﻿using Alchemy.BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Alchemy.WebApp.Controllers;
@@ -15,7 +15,7 @@ public class IngredientsController : Controller
 
     public IActionResult Index()
     {
-        var ingredients = _ingredients.GetAll();
+        var ingredients = _ingredients.List();
         return View(ingredients);
     }
 

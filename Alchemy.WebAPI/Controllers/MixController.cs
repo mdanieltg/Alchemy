@@ -1,4 +1,4 @@
-﻿using Alchemy.BusinessLogic.Contracts;
+﻿using Alchemy.BusinessLogic.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 

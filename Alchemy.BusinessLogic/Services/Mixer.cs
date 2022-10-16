@@ -1,5 +1,4 @@
-﻿using Alchemy.BusinessLogic.Contracts;
-using Alchemy.DataModel.Entities;
+﻿using Alchemy.DataModel.Entities;
 
 namespace Alchemy.BusinessLogic.Services;
 
@@ -20,7 +19,7 @@ public class Mixer : IMixer
             var ingredients = new List<Ingredient>();
             var effectIngredientsDictionary =
                 new Dictionary<Effect, List<Ingredient>>();
-            var allIngredients = _ingredients.GetAll().ToList();
+            var allIngredients = _ingredients.List().ToList();
 
             // Find all ingredients provided in ingredientIds
             foreach (var ingredientId in ingredientIds)

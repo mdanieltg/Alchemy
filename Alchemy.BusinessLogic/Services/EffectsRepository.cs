@@ -1,5 +1,4 @@
-﻿using Alchemy.BusinessLogic.Contracts;
-using Alchemy.DataModel;
+﻿using Alchemy.DataModel;
 using Alchemy.DataModel.Entities;
 
 namespace Alchemy.BusinessLogic.Services;
@@ -13,7 +12,7 @@ public class EffectsRepository : IEffectsRepository
         _context = alchemyContext ?? throw new ArgumentNullException(nameof(alchemyContext));
     }
 
-    public IEnumerable<Effect> GetAll()
+    public IEnumerable<Effect> List()
     {
         return _context.Effects
             .OrderBy(e => e.Name);

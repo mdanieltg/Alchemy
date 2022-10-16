@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Alchemy.BusinessLogic.Contracts;
 using Alchemy.BusinessLogic.Services;
 using Alchemy.DataModel.Entities;
 using Alchemy.WebApp.Models;
@@ -19,8 +18,8 @@ public class MixerController : Controller
 
     public IActionResult Index()
     {
-        ViewBag.IngredientsAsJson = ToJsonString(_ingredients.GetAll());
-        ViewBag.Ingredients = _ingredients.GetAll();
+        ViewBag.IngredientsAsJson = ToJsonString(_ingredients.List());
+        ViewBag.Ingredients = _ingredients.List();
         return View();
     }
 
@@ -29,8 +28,8 @@ public class MixerController : Controller
     {
         if (!ModelState.IsValid || selection.Ingredients is null)
         {
-            ViewBag.IngredientsAsJson = ToJsonString(_ingredients.GetAll());
-            ViewBag.Ingredients = _ingredients.GetAll();
+            ViewBag.IngredientsAsJson = ToJsonString(_ingredients.List());
+            ViewBag.Ingredients = _ingredients.List();
             return View(selection);
         }
 

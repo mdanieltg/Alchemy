@@ -1,4 +1,4 @@
-﻿namespace Alchemy.BusinessLogic.Contracts;
+﻿namespace Alchemy.BusinessLogic.Services;
 
 public interface IMixer
 {

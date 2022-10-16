@@ -9,4 +9,5 @@ public class Ingredient
     public string Obtaining { get; set; } = null!;
     public string? Dlc { get; set; }
     public IEnumerable<EffectLimited> Effects { get; set; } = null!;
+    public string? Url { get; set; }
 }
