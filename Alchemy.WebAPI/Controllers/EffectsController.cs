@@ -22,7 +22,10 @@ public class EffectsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IEnumerable<Effect> GetAllEffects() => _mapper.Map<IEnumerable<Effect>>(_effects.GetAll());
+    public IEnumerable<Effect> GetAllEffects()
+    {
+        return _mapper.Map<IEnumerable<Effect>>(_effects.GetAll().ToList());
+    }
 
     [HttpGet("{effectId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

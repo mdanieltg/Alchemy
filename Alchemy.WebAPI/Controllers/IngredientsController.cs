@@ -23,7 +23,7 @@ public class IngredientsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IEnumerable<Ingredient> GetIngredients() =>
-        _mapper.Map<IEnumerable<Ingredient>>(_ingredients.GetAll());
+        _mapper.Map<IEnumerable<Ingredient>>(_ingredients.GetAll().ToList());
 
     [HttpGet("{ingredientId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
