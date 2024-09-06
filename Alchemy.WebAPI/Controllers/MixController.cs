@@ -1,5 +1,7 @@
-﻿using Alchemy.BusinessLogic.Services;
-using Alchemy.WebAPI.Helpers;
+﻿using System.Net.Mime;
+using Alchemy.Domain.Models;
+using Alchemy.Domain.Services;
+using Alchemy.WebAPI.Binders;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +9,7 @@ namespace Alchemy.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/mix")]
-[Produces("application/json", "application/xml", "text/json", "text/xml")]
+[Produces(MediaTypeNames.Application.Json)]
 public class MixController : ControllerBase
 {
     private readonly IMixer _mixer;
@@ -22,11 +24,10 @@ public class MixController : ControllerBase
     [HttpGet("{ids}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<Mix>>> Mix(
-        [FromRoute] [ModelBinder(BinderType = typeof(ArrayModelBinder))]
-        IEnumerable<int> ids)
+    public ActionResult<IEnumerable<MixDto>> Mix(
+        [FromRoute] [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
     {
-        var mixes = await _mixer.Mix(ids);
-        return Ok(_mapper.Map<IEnumerable<Mix>>(mixes));
+        List<Mix> mixes = _mixer.Mix(new HashSet<int>(ids));
+        return Ok(_mapper.Map<IEnumerable<MixDto>>(mixes));
     }
 }

@@ -1,17 +1,10 @@
-﻿using Alchemy.DataModel.Entities;
+﻿using Alchemy.Domain.Entities;
 
 namespace Alchemy.DataModel;
 
-public class AlchemyContext
+public sealed class AlchemyContext
 {
-    internal AlchemyContext(HashSet<Dlc> dlcs, HashSet<Effect> effects, HashSet<Ingredient> ingredients)
-    {
-        Dlcs = dlcs;
-        Effects = effects;
-        Ingredients = ingredients;
-    }
-
-    public ICollection<Dlc> Dlcs { get; }
-    public ICollection<Effect> Effects { get; }
-    public ICollection<Ingredient> Ingredients { get; }
+    public required IReadOnlySet<DownloadableContent> Dlcs { get; init; }
+    public required IReadOnlySet<Effect> Effects { get; init; }
+    public required IReadOnlySet<Ingredient> Ingredients { get; init; }
 }

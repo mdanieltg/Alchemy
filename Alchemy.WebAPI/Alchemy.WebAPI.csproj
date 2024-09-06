@@ -16,4 +16,12 @@
     <ProjectReference Include="..\Alchemy.DataModel\Alchemy.DataModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="publish\web.config" />
+    <_ContentIncludedByDefault Remove="publish\Alchemy.WebAPI.deps.json" />
+    <_ContentIncludedByDefault Remove="publish\Alchemy.WebAPI.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="publish\appsettings.json" />
+  </ItemGroup>
+
 </Project>
