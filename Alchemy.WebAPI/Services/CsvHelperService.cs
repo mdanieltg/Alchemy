@@ -59,7 +59,7 @@ public class CsvHelperService
         });
     }
 
-    private async Task<StreamReader> Fetch(string uri)
+    private async ValueTask<StreamReader> Fetch(string uri)
     {
         try
         {
@@ -75,45 +75,39 @@ public class CsvHelperService
         }
     }
 
-    public async IAsyncEnumerable<DlcDto> GetDlcs()
+    public async ValueTask<HashSet<DlcDto>> GetDlcs()
     {
         using StreamReader streamReader = await Fetch(_dlcFileLocation);
         using var csvReader = new CsvReader(streamReader, _configuration);
 
-        IAsyncEnumerable<DlcDto> dlcs = csvReader.GetRecordsAsync<DlcDto>();
-        await foreach (DlcDto dlc in dlcs)
-        {
-            yield return dlc;
-        }
+        IEnumerable<DlcDto> dlcs = csvReader.GetRecords<DlcDto>();
+        return new HashSet<DlcDto>(dlcs);
     }
 
-    public async IAsyncEnumerable<EffectDto> GetEffects()
+    public async ValueTask<HashSet<EffectDto>> GetEffects()
     {
         using StreamReader streamReader = await Fetch(_effectsFileLocation);
         using var csvReader = new CsvReader(streamReader, _configuration);
 
-        IAsyncEnumerable<EffectDto> effects = csvReader.GetRecordsAsync<EffectDto>();
-        await foreach (EffectDto effect in effects)
-            yield return effect;
+        IEnumerable<EffectDto> effects = csvReader.GetRecords<EffectDto>();
+        return new HashSet<EffectDto>(effects);
     }
 
-    public async IAsyncEnumerable<IngredientDto> GetIngredients()
+    public async ValueTask<HashSet<IngredientDto>> GetIngredients()
     {
         using StreamReader streamReader = await Fetch(_ingredientsFileLocation);
         using var csvReader = new CsvReader(streamReader, _configuration);
 
-        IAsyncEnumerable<IngredientDto> ingredients = csvReader.GetRecordsAsync<IngredientDto>();
-        await foreach (IngredientDto ingredient in ingredients)
-            yield return ingredient;
+        IEnumerable<IngredientDto> ingredients = csvReader.GetRecords<IngredientDto>();
+        return new HashSet<IngredientDto>(ingredients);
     }
 
-    public async IAsyncEnumerable<IngredientEffectsDto> GetIngredientEffects()
+    public async ValueTask<HashSet<IngredientsEffectsDto>> GetIngredientEffects()
     {
         using StreamReader streamReader = await Fetch(_ingredientEffectsFileLocation);
         using var csvReader = new CsvReader(streamReader, _configuration);
 
-        IAsyncEnumerable<IngredientEffectsDto> ingredientEffects = csvReader.GetRecordsAsync<IngredientEffectsDto>();
-        await foreach (IngredientEffectsDto ingredientEffect in ingredientEffects)
-            yield return ingredientEffect;
+        IEnumerable<IngredientsEffectsDto> ingredientsEffects = csvReader.GetRecords<IngredientsEffectsDto>();
+        return new HashSet<IngredientsEffectsDto>(ingredientsEffects);
     }
 }
