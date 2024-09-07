@@ -1,4 +1,5 @@
-﻿using Alchemy.DataModel;
+﻿using System.Collections.Immutable;
+using Alchemy.DataModel;
 using Alchemy.Domain.Entities;
 using Alchemy.WebAPI.CsvModels;
 
@@ -13,92 +14,64 @@ public class DataTransformService
         _csvHelper = csvHelper;
     }
 
-    public async Task<DataStore> CreateContextAsync()
+    public async ValueTask<DataStore> CreateContextAsync()
     {
-        IAsyncEnumerable<DlcDto> dlcDtos = _csvHelper.GetDlcs();
-        IAsyncEnumerable<IngredientDto> ingredientDtos = _csvHelper.GetIngredients();
-        IAsyncEnumerable<EffectDto> effectDtos = _csvHelper.GetEffects();
-        IAsyncEnumerable<IngredientEffectsDto> ingredientEffects = _csvHelper.GetIngredientEffects();
+        HashSet<DlcDto> dlcDtos = await _csvHelper.GetDlcs();
+        HashSet<IngredientDto> ingredientDtos = await _csvHelper.GetIngredients();
+        HashSet<EffectDto> effectDtos = await _csvHelper.GetEffects();
+        HashSet<IngredientsEffectsDto> ingredientEffectsDtos = await _csvHelper.GetIngredientEffects();
 
-        HashSet<DownloadableContent> downloadableContents = await TransformAsync(dlcDtos);
-        HashSet<Effect> effects = await TransformAsync(effectDtos);
-        HashSet<Ingredient> ingredients = await TransformAsync(ingredientDtos, downloadableContents);
-
-        await InsertEffectsIntoIngredientsAsync(
-            ingredients: ingredients,
-            effects: effects,
-            ingredientEffects: ingredientEffects
-        );
+        ImmutableHashSet<DownloadableContent> downloadableContents = Transform(dlcDtos);
+        ImmutableHashSet<Effect> effects = Transform(effectDtos);
+        ImmutableHashSet<Ingredient> ingredients = Transform(ingredientDtos, downloadableContents);
+        ImmutableHashSet<IngredientsEffects> ingredientsEffects = Transform(ingredientEffectsDtos);
 
         return new DataStore
         {
             Dlcs = downloadableContents,
             Effects = effects,
-            Ingredients = ingredients
+            Ingredients = ingredients,
+            IngredientsEffects = ingredientsEffects
         };
     }
 
-    private static async Task<HashSet<DownloadableContent>> TransformAsync(IAsyncEnumerable<DlcDto> dlcs)
-    {
-        var set = new HashSet<DownloadableContent>();
-        await foreach (DlcDto dlc in dlcs)
+    private static ImmutableHashSet<DownloadableContent> Transform(IEnumerable<DlcDto> dlcs) =>
+        dlcs.Select(dlcDto => new DownloadableContent
         {
-            set.Add(new DownloadableContent
+            Id = dlcDto.Id,
+            Name = dlcDto.Name
+        }).ToImmutableHashSet();
+
+    private static ImmutableHashSet<Effect> Transform(IEnumerable<EffectDto> effects) =>
+        effects.Select(effectDto =>
+            new Effect
             {
-                Id = dlc.Id,
-                Name = dlc.Name
-            });
-        }
+                Id = effectDto.Id,
+                Name = effectDto.Name
+            }
+        ).ToImmutableHashSet();
 
-        return set;
-    }
-
-    private static async Task<HashSet<Effect>> TransformAsync(IAsyncEnumerable<EffectDto> effects)
-    {
-        var set = new HashSet<Effect>();
-        await foreach (EffectDto effect in effects)
-        {
-            set.Add(new Effect
+    private static ImmutableHashSet<Ingredient> Transform(IEnumerable<IngredientDto> ingredients,
+        IReadOnlySet<DownloadableContent> dlcs) =>
+        ingredients.Select(ingredientDto =>
+            new Ingredient
             {
-                Id = effect.Id,
-                Name = effect.Name
-            });
-        }
+                Id = ingredientDto.Id,
+                Name = ingredientDto.Name,
+                BaseValue = ingredientDto.BaseValue,
+                Weight = ingredientDto.Weight,
+                Obtaining = ingredientDto.Obtaining,
+                DlcId = ingredientDto.DlcId,
+                Dlc = dlcs.FirstOrDefault(dlc => dlc.Id == ingredientDto.DlcId)
+            }
+        ).ToImmutableHashSet();
 
-        return set;
-    }
-
-    private static async Task<HashSet<Ingredient>> TransformAsync(IAsyncEnumerable<IngredientDto> ingredients,
-        IReadOnlyCollection<DownloadableContent> dlcs)
-    {
-        var set = new HashSet<Ingredient>();
-        await foreach (IngredientDto ingredient in ingredients)
-        {
-            set.Add(new Ingredient
+    private static ImmutableHashSet<IngredientsEffects>
+        Transform(IEnumerable<IngredientsEffectsDto> ingredientsEffects) =>
+        ingredientsEffects.Select(dto => new IngredientsEffects
             {
-                Id = ingredient.Id,
-                Name = ingredient.Name,
-                BaseValue = ingredient.BaseValue,
-                Weight = ingredient.Weight,
-                Obtaining = ingredient.Obtaining,
-                DlcId = ingredient.DlcId,
-                Dlc = dlcs.FirstOrDefault(dlc => dlc.Id == ingredient.DlcId)
-            });
-        }
-
-        return set;
-    }
-
-    private static async Task InsertEffectsIntoIngredientsAsync(IReadOnlyCollection<Effect> effects,
-        IReadOnlyCollection<Ingredient> ingredients, IAsyncEnumerable<IngredientEffectsDto> ingredientEffects)
-    {
-        await foreach (IngredientEffectsDto ingredientEffect in ingredientEffects)
-        {
-            Effect effect = effects.First(e => e.Id == ingredientEffect.EffectId);
-            Ingredient ingredient = ingredients.First(i => i.Id == ingredientEffect.IngredientId);
-
-            effect.Ingredients.Add(ingredient);
-            ingredient.Effects.Add(effect);
-        }
-    }
+                EffectId = dto.EffectId,
+                IngredientId = dto.IngredientId
+            }
+        ).ToImmutableHashSet();
 }

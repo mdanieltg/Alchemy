@@ -2,7 +2,7 @@
 
 namespace Alchemy.WebAPI.CsvModels;
 
-public class IngredientEffectsDto
+public class IngredientsEffectsDto
 {
     [Index(1)]
     public int IngredientId { get; set; }

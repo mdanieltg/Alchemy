@@ -13,5 +13,4 @@ public class Ingredient
     public int? DlcId { get; set; }
 
     public DownloadableContent? Dlc { get; set; }
-    public HashSet<Effect> Effects { get; set; } = new();
 }

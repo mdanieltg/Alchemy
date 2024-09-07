@@ -1,4 +1,5 @@
-﻿using Alchemy.Domain.Entities;
+﻿using Alchemy.DataModel;
+using Alchemy.Domain.Entities;
 using Alchemy.Domain.Models;
 using Alchemy.Domain.Repositories;
 using Alchemy.Domain.Services;
@@ -8,10 +9,12 @@ namespace Alchemy.BusinessLogic.Services;
 public class Mixer : IMixer
 {
     private readonly IRepository<Ingredient> _ingredients;
+    private readonly DataStore _dataStore;
 
-    public Mixer(IRepository<Ingredient> ingredientsRepository)
+    public Mixer(IRepository<Ingredient> ingredientsRepository, DataStore dataStore)
     {
         _ingredients = ingredientsRepository ?? throw new ArgumentNullException(nameof(ingredientsRepository));
+        _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
     }
 
     public List<Mix> Mix(IReadOnlySet<int> ingredientIds)
@@ -26,7 +29,13 @@ public class Mixer : IMixer
         // Fill effectIngredients dictionary 
         foreach (Ingredient ingredient in selectedIngredients)
         {
-            foreach (Effect effect in ingredient.Effects)
+            IEnumerable<int> ingredientEffects = _dataStore.IngredientsEffects
+                .Where(ie => ie.IngredientId == ingredient.Id)
+                .Select(ie => ie.EffectId);
+
+            IEnumerable<Effect> effects = _dataStore.Effects.Where(effect => ingredientEffects.Contains(effect.Id));
+
+            foreach (Effect effect in effects)
             {
                 if (effectIngredientsDictionary.ContainsKey(effect))
                 {
