@@ -30,20 +30,26 @@ public class IngredientsController : ControllerBase
         QueryParameterValidation.EnsureLimitIsBetweenLimits(ref limit);
         QueryParameterValidation.EnsureOffsetIsBetweenLimits(ref offset);
 
-        if (offset > 1)
+        PagedCollection<Ingredient> pagedCollection = _ingredients.List(limit, offset);
+
+        if (pagedCollection.PreviousPage is not null)
         {
             string? prevUrl = Url.ActionLink(
                 action: nameof(GetIngredients),
-                values: new { limit, offset = offset - 1 });
+                values: new { limit, offset = pagedCollection.PreviousPage });
             Response.Headers.Add("X-Previous", prevUrl);
         }
 
-        string? nextUrl = Url.ActionLink(
-            action: nameof(GetIngredients),
-            values: new { limit, offset = offset + 1 });
-        Response.Headers.Add("X-Next", nextUrl);
+        if (pagedCollection.NextPage is not null)
+        {
+            string? nextUrl = Url.ActionLink(
+                action: nameof(GetIngredients),
+                values: new { limit, offset = pagedCollection.NextPage });
+            Response.Headers.Add("X-Next", nextUrl);
+        }
 
-        PagedCollection<Ingredient> pagedCollection = _ingredients.List(limit, offset);
+        Response.Headers.Add("X-MaxOffset", pagedCollection.LastPage.ToString());
+
         return _mapper.Map<IEnumerable<IngredientLimited>>(pagedCollection.Collection);
     }
 
