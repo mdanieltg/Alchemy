@@ -18,7 +18,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Data context
 var csvHelper = new CsvHelperService(builder.Configuration);
 var dataTransform = new DataTransformService(csvHelper);
-AlchemyContext context = await dataTransform.CreateContextAsync();
+DataStore context = await dataTransform.CreateContextAsync();
 builder.Services.AddSingleton(context);
 
 builder.Services.AddScoped<IRepository<DownloadableContent>, DownloadableContentRepository>();

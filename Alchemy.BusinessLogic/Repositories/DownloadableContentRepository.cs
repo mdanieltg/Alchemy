@@ -6,11 +6,11 @@ namespace Alchemy.BusinessLogic.Repositories;
 
 public class DownloadableContentRepository : IRepository<DownloadableContent>
 {
-    private readonly AlchemyContext _context;
+    private readonly DataStore _context;
 
-    public DownloadableContentRepository(AlchemyContext alchemyContext)
+    public DownloadableContentRepository(DataStore dataStore)
     {
-        _context = alchemyContext ?? throw new ArgumentNullException(nameof(alchemyContext));
+        _context = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
     }
 
     public DownloadableContent? Get(int contentId) => _context.Dlcs.FirstOrDefault(content => content.Id == contentId);

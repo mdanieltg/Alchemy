@@ -7,11 +7,11 @@ namespace Alchemy.BusinessLogic.Repositories;
 
 public class EffectsRepository : IRepository<Effect>, IPagedRepository<Effect>
 {
-    private readonly AlchemyContext _context;
+    private readonly DataStore _context;
 
-    public EffectsRepository(AlchemyContext alchemyContext)
+    public EffectsRepository(DataStore dataStore)
     {
-        _context = alchemyContext ?? throw new ArgumentNullException(nameof(alchemyContext));
+        _context = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
     }
 
     public PagedCollection<Effect> List(int limit, int offset)

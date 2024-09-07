@@ -7,11 +7,11 @@ namespace Alchemy.BusinessLogic.Repositories;
 
 public class IngredientsRepository : IRepository<Ingredient>, IPagedRepository<Ingredient>
 {
-    private readonly AlchemyContext _context;
+    private readonly DataStore _context;
 
-    public IngredientsRepository(AlchemyContext alchemyContext)
+    public IngredientsRepository(DataStore dataStore)
     {
-        _context = alchemyContext ?? throw new ArgumentNullException(nameof(alchemyContext));
+        _context = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
     }
 
     public PagedCollection<Ingredient> List(int limit, int offset)

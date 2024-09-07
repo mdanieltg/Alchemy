@@ -13,7 +13,7 @@ public class DataTransformService
         _csvHelper = csvHelper;
     }
 
-    public async Task<AlchemyContext> CreateContextAsync()
+    public async Task<DataStore> CreateContextAsync()
     {
         IAsyncEnumerable<DlcDto> dlcDtos = _csvHelper.GetDlcs();
         IAsyncEnumerable<IngredientDto> ingredientDtos = _csvHelper.GetIngredients();
@@ -30,7 +30,7 @@ public class DataTransformService
             ingredientEffects: ingredientEffects
         );
 
-        return new AlchemyContext
+        return new DataStore
         {
             Dlcs = downloadableContents,
             Effects = effects,
