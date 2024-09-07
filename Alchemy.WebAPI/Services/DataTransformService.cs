@@ -14,7 +14,7 @@ public class DataTransformService
         _csvHelper = csvHelper;
     }
 
-    public async ValueTask<DataStore> CreateContextAsync()
+    public async ValueTask<DataStore> CreateDataStoreAsync()
     {
         HashSet<DlcDto> dlcDtos = await _csvHelper.GetDlcs();
         HashSet<IngredientDto> ingredientDtos = await _csvHelper.GetIngredients();

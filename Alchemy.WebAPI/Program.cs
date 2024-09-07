@@ -15,11 +15,11 @@ builder.Services.AddControllers(options => options.ReturnHttpNotAcceptable = tru
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// Data context
+// DataStore
 var csvHelper = new CsvHelperService(builder.Configuration);
 var dataTransform = new DataTransformService(csvHelper);
-DataStore context = await dataTransform.CreateContextAsync();
-builder.Services.AddSingleton(context);
+DataStore dataStore = await dataTransform.CreateDataStoreAsync();
+builder.Services.AddSingleton(dataStore);
 
 builder.Services.AddScoped<IRepository<DownloadableContent>, DownloadableContentRepository>();
 builder.Services.AddScoped<IRepository<Ingredient>, IngredientsRepository>();
