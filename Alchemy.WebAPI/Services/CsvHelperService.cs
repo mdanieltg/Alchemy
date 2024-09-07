@@ -52,7 +52,7 @@ public class CsvHelperService
             NewLine = "\n"
         };
 
-        _httpClient = new HttpClient(new HttpClientHandler()
+        _httpClient = new HttpClient(new HttpClientHandler
         {
             AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
             SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13

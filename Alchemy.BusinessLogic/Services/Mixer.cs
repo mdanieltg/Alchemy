@@ -36,16 +36,10 @@ public class Mixer : IMixer
             IEnumerable<Effect> effects = _dataStore.Effects.Where(effect => ingredientEffects.Contains(effect.Id));
 
             foreach (Effect effect in effects)
-            {
                 if (effectIngredientsDictionary.ContainsKey(effect))
-                {
                     effectIngredientsDictionary[effect].Add(ingredient);
-                }
                 else
-                {
-                    effectIngredientsDictionary.Add(effect, new() { ingredient });
-                }
-            }
+                    effectIngredientsDictionary.Add(effect, new List<Ingredient> { ingredient });
         }
 
         return effectIngredientsDictionary

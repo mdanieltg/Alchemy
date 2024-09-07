@@ -6,7 +6,7 @@ namespace Alchemy.Domain.Entities;
 public class Ingredient
 {
     public int Id { get; set; }
-    public required string Name { get; set; } 
+    public required string Name { get; set; }
     public double Weight { get; set; }
     public int BaseValue { get; set; }
     public required string Obtaining { get; set; }

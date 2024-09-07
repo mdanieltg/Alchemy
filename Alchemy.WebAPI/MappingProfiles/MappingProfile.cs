@@ -1,5 +1,4 @@
-﻿using Alchemy.BusinessLogic;
-using Alchemy.Domain.Entities;
+﻿using Alchemy.Domain.Entities;
 using Alchemy.Domain.Models;
 using Alchemy.WebAPI.Models;
 using AutoMapper;
