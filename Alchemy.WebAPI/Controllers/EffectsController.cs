@@ -37,7 +37,7 @@ public class EffectsController : ControllerBase
             string? prevUrl = Url.ActionLink(
                 action: nameof(GetAllEffects),
                 values: new { limit, offset = pagedCollection.PreviousPage });
-            Response.Headers.Add("X-Previous", prevUrl);
+            Response.Headers["X-Previous"] = prevUrl;
         }
 
         if (pagedCollection.NextPage is not null)
@@ -45,10 +45,10 @@ public class EffectsController : ControllerBase
             string? nextUrl = Url.ActionLink(
                 action: nameof(GetAllEffects),
                 values: new { limit, offset = pagedCollection.NextPage });
-            Response.Headers.Add("X-Next", nextUrl);
+            Response.Headers["X-Next"] = nextUrl;
         }
 
-        Response.Headers.Add("X-MaxOffset", pagedCollection.LastPage.ToString());
+        Response.Headers["X-Max-Offset"] = pagedCollection.LastPage.ToString();
 
         return _mapper.Map<IEnumerable<EffectLimited>>(pagedCollection.Collection);
     }
