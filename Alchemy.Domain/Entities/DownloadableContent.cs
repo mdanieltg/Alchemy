@@ -7,6 +7,4 @@ public class DownloadableContent
 {
     public int Id { get; set; }
     public required string Name { get; set; }
-
-    public IReadOnlySet<Ingredient> Ingredients { get; set; }
 }
