@@ -1,5 +1,8 @@
-﻿namespace Alchemy.WebAPI.Models;
+﻿using System.Diagnostics;
 
+namespace Alchemy.WebAPI.Models;
+
+[DebuggerDisplay("Ingredient: {Name}")]
 public class IngredientDto
 {
     public int Id { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Alchemy.Domain.Entities;
 
-[DebuggerDisplay("{Name}")]
+[DebuggerDisplay("Ingredient: {Name}")]
 public class Ingredient
 {
     public int Id { get; set; }

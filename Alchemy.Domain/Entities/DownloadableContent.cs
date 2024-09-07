@@ -2,7 +2,7 @@
 
 namespace Alchemy.Domain.Entities;
 
-[DebuggerDisplay("{Name}")]
+[DebuggerDisplay("DLC: {Name}")]
 public class DownloadableContent
 {
     public int Id { get; set; }
