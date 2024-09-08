@@ -13,4 +13,5 @@ public class Ingredient
     public int? DlcId { get; set; }
 
     public DownloadableContent? Dlc { get; set; }
+    public IEnumerable<Effect>? Effects { get; set; }
 }

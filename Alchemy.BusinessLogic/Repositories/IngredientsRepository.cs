@@ -36,6 +36,37 @@ public class IngredientsRepository : IRepository<Ingredient>, IPagedRepository<I
 
     public IEnumerable<Ingredient> List() => _dataStore.Ingredients.OrderBy(ingredient => ingredient.Name);
 
-    public Ingredient? Get(int ingredientId) =>
-        _dataStore.Ingredients.FirstOrDefault(ingredient => ingredient.Id == ingredientId);
+    public Ingredient? Get(int ingredientId)
+    {
+        var effectIngredients = _dataStore.Effects
+            .Join(_dataStore.IngredientsEffects,
+                effect => effect.Id,
+                ingredientsEffects => ingredientsEffects.EffectId,
+                (effect, ingredientsEffects) => new
+                {
+                    Effect = effect,
+                    IngredientEffects = ingredientsEffects
+                }
+            )
+            .Where(x => x.IngredientEffects.IngredientId == ingredientId);
+
+        return _dataStore.Ingredients
+            .GroupJoin(effectIngredients, ingredient => ingredient.Id,
+                grouping => grouping.IngredientEffects.IngredientId,
+                (ingredient, effectGrouping) => new Ingredient
+                {
+                    Id = ingredient.Id,
+                    Name = ingredient.Name,
+                    Weight = ingredient.Weight,
+                    Obtaining = ingredient.Obtaining,
+                    BaseValue = ingredient.BaseValue,
+                    DlcId = ingredient.DlcId,
+                    Dlc = ingredient.Dlc,
+                    Effects = effectGrouping
+                        .Select(grouping => grouping.Effect)
+                        .OrderBy(effect => effect.Name)
+                }
+            )
+            .FirstOrDefault(ingredient => ingredient.Id == ingredientId);
+    }
 }

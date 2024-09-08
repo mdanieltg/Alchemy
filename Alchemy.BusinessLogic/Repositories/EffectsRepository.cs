@@ -36,5 +36,32 @@ public class EffectsRepository : IRepository<Effect>, IPagedRepository<Effect>
 
     public IEnumerable<Effect> List() => _dataStore.Effects.OrderBy(effect => effect.Name);
 
-    public Effect? Get(int effectId) => _dataStore.Effects.FirstOrDefault(effect => effect.Id == effectId);
+    public Effect? Get(int effectId)
+    {
+        var ingredientEffects = _dataStore.Ingredients
+            .Join(_dataStore.IngredientsEffects,
+                ingredient => ingredient.Id,
+                ingredientsEffects => ingredientsEffects.IngredientId,
+                (ingredient, ingredientsEffects) => new
+                {
+                    Ingredient = ingredient,
+                    IngredientEffects = ingredientsEffects
+                }
+            )
+            .Where(x => x.IngredientEffects.EffectId == effectId);
+
+        return _dataStore.Effects
+            .GroupJoin(ingredientEffects, effect => effect.Id,
+                grouping => grouping.IngredientEffects.EffectId,
+                (effect, ingredientGrouping) => new Effect
+                {
+                    Id = effect.Id,
+                    Name = effect.Name,
+                    Ingredients = ingredientGrouping
+                        .Select(grouping => grouping.Ingredient)
+                        .OrderBy(ingredient => ingredient.Name)
+                }
+            )
+            .FirstOrDefault(effect => effect.Id == effectId);
+    }
 }

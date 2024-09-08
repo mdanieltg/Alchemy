@@ -2,6 +2,7 @@
 using Alchemy.Domain.Models;
 using Alchemy.Domain.Services;
 using Alchemy.WebAPI.Binders;
+using Alchemy.WebAPI.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
