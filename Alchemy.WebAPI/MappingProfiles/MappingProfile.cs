@@ -3,7 +3,7 @@ using Alchemy.Domain.Models;
 using Alchemy.WebAPI.Models;
 using AutoMapper;
 
-namespace Alchemy.WebAPI.Profiles;
+namespace Alchemy.WebAPI.MappingProfiles;
 
 public class MappingProfile : Profile
 {
