@@ -1,5 +1,4 @@
-﻿using Alchemy.BusinessLogic.Contracts;
-using Alchemy.BusinessLogic.Services;
+﻿using Alchemy.BusinessLogic.Services;
 using Alchemy.WebAPI.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,10 @@ public class DlcsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IEnumerable<Dlc> GetDlcs() => _mapper.Map<IEnumerable<Dlc>>(_dlcs.GetAll());
+    public IEnumerable<Dlc> GetDlcs()
+    {
+        return _mapper.Map<IEnumerable<Dlc>>(_dlcs.List());
+    }
 
     [HttpGet("{dlcId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

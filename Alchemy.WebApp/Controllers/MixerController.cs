@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Alchemy.BusinessLogic.Contracts;
 using Alchemy.BusinessLogic.Services;
 using Alchemy.DataModel.Entities;
 using Alchemy.WebApp.Models;
@@ -19,29 +18,23 @@ public class MixerController : Controller
 
     public IActionResult Index()
     {
-        ViewBag.IngredientsAsJson = ToJsonString(_ingredients.GetAll());
+        ViewBag.IngredientsAsJson = ToJsonString(_ingredients.List());
+        ViewBag.Ingredients = _ingredients.List();
         return View();
     }
 
     [HttpPost]
-    public IActionResult Index(ItemsSelection selection)
+    public async Task<IActionResult> Index([FromServices] IMixer mixer, ItemsSelection selection)
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid || selection.Ingredients is null)
         {
-            ViewBag.IngredientsAsJson = ToJsonString(_ingredients.GetAll());
+            ViewBag.IngredientsAsJson = ToJsonString(_ingredients.List());
+            ViewBag.Ingredients = _ingredients.List();
             return View(selection);
         }
 
-        return RedirectToAction("Mix", new { selection.Ingredients });
-    }
-
-    [HttpGet("mix")]
-    public async Task<IActionResult> Mix(
-        [FromQuery] IEnumerable<int> Ingredients,
-        [FromServices] IMixer mixer)
-    {
-        var mixes = await mixer.Mix(Ingredients);
-        return View(mixes);
+        var mixes = await mixer.Mix(selection.Ingredients);
+        return View("Mix", mixes);
     }
 
     private static string ToJsonString(IEnumerable<Ingredient> ingredients)
@@ -50,7 +43,8 @@ public class MixerController : Controller
             ingredients.Select(i => new
             {
                 i.Id,
-                i.Name
+                i.Name,
+                Selected = false
             }),
             new JsonSerializerOptions(JsonSerializerDefaults.Web));
     }

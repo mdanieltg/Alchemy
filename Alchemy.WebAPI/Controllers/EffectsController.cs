@@ -1,5 +1,5 @@
-﻿using Alchemy.BusinessLogic.Contracts;
-using Alchemy.BusinessLogic.Services;
+﻿using Alchemy.BusinessLogic.Services;
+using Alchemy.BusinessLogic.Validation;
 using Alchemy.WebAPI.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -11,28 +11,50 @@ namespace Alchemy.WebAPI.Controllers;
 [Produces("application/json", "application/xml", "text/json", "text/xml")]
 public class EffectsController : ControllerBase
 {
-    private readonly IEffectsRepository _effects;
+    private readonly IPagedEffectsRepository _effects;
     private readonly IMapper _mapper;
 
-    public EffectsController(IEffectsRepository effectsRepository, IMapper mapper)
+    public EffectsController(IPagedEffectsRepository effectsRepository, IMapper mapper)
     {
         _effects = effectsRepository ?? throw new ArgumentNullException(nameof(effectsRepository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    [HttpGet]
+    [HttpGet(Name = "ListEffects")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IEnumerable<Effect> GetAllEffects() => _mapper.Map<IEnumerable<Effect>>(_effects.GetAll());
+    public IEnumerable<EffectLimited> GetAllEffects([FromQuery] int limit = 10, [FromQuery] int offset = 1)
+    {
+        QueryParameterValidation.EnsureLimitIsBetweenLimits(ref limit);
+        QueryParameterValidation.EnsureOffsetIsBetweenLimits(ref offset);
 
-    [HttpGet("{effectId}")]
+        if (offset > 1)
+        {
+            var prevUrl = Url.Link("ListEffects", new { limit, offset = offset - 1 });
+            Response.Headers.Add("X-Previous", prevUrl);
+        }
+
+        var nextUrl = Url.Link("ListEffects", new { limit, offset = offset + 1 });
+        Response.Headers.Add("X-Next", nextUrl);
+
+        var pagedCollection = _effects.List(limit, offset);
+        return _mapper.Map<IEnumerable<EffectLimited>>(pagedCollection.Collection);
+    }
+
+    [HttpGet("{effectId}", Name = "GetEffect")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<Effect> GetEffect(int effectId)
     {
         var effect = _effects.Get(effectId);
+        if (effect is null) return NotFound();
 
-        return effect == null
-            ? NotFound()
-            : Ok(_mapper.Map<Effect>(effect));
+        var url = Url.Link("GetEffect", new { effectId = effect.Id });
+        var effectToReturn = new Effect
+        {
+            Url = url
+        };
+        _mapper.Map(effect, effectToReturn);
+
+        return Ok(effectToReturn);
     }
 }

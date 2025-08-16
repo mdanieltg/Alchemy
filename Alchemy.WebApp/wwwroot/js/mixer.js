@@ -1,50 +1,87 @@
 ﻿(function () {
-    const jsonList = document.getElementById("ingredients").value;
-    const ingredients = JSON.parse(jsonList);
-    const selectedIngredients = new Set();
-    const select = document.querySelector("form select");
-    const input = document.getElementById("ingredients-input");
-    const dataList = document.getElementById("readable-ingredients");
+    const ingredients = JSON.parse(document.getElementById("ingredientsAsJson").value);
+    const searchInput = document.getElementById("search-input");
+    const selectElement = document.getElementById("Ingredients");
+    const submitButton = document.getElementById("submit");
+    let filteredIngredients = ingredients;
+    let isFiltered = false;
 
-    document.getElementById("add-ingredient").addEventListener("click", (e) => {
+    document.querySelector("form").addEventListener("reset", e => {
         e.preventDefault();
-
-        const value = input.value.trim().toLowerCase();
-        const ingredient = ingredients.find(i => i.name.toLowerCase() === value);
-
-        if (ingredient) {
-            selectedIngredients.add(ingredient);
-            updateSelect(select, selectedIngredients);
-        }
-
-        input.value = "";
+        searchInput.value = "";
+        ingredients.forEach(i => i.selected = false);
+        isFiltered = false;
+        setSubmitButtonDisabledState(isFiltered);
+        populateSelect(selectElement, ingredients);
     });
 
-    document.querySelector("form").addEventListener("submit", (e) => {
-        for (const option of select.options) {
-            option.setAttribute("selected", true);
+    document.getElementById("filter").addEventListener("click", e => {
+        e.preventDefault();
+        const search = searchInput.value.trim();
+
+        if (search.length === 0) {
+            return;
+        }
+
+        isFiltered = true;
+        setSubmitButtonDisabledState(isFiltered);
+        filteredIngredients = ingredients.filter(i => i.name.toLowerCase().includes(search.toLowerCase()));
+        populateSelect(selectElement, filteredIngredients);
+    });
+
+    document.getElementById("reset-filter").addEventListener("click", e => {
+        e.preventDefault();
+        searchInput.value = "";
+        isFiltered = false;
+        setSubmitButtonDisabledState(isFiltered);
+        populateSelect(selectElement, ingredients);
+    });
+
+    selectElement.addEventListener("change", e => {
+        e.preventDefault();
+        if (isFiltered) {
+            const children = Array.from(selectElement.children);
+            syncSelection(filteredIngredients, children);
+        } else {
+            const children = Array.from(selectElement.children);
+            syncSelection(ingredients, children);
         }
     });
 
-    function updateSelect(selectlist, ingredients) {
-        selectlist.options.length = 0;
+    function populateSelect(select, items) {
+        select.length = 0;
 
-        for (const ingredient of ingredients) {
-            const option = document.createElement("option");
-            option.setAttribute("value", ingredient.id);
-            option.innerText = ingredient.name;
-            selectlist.appendChild(option);
+        for (const item of items.sort((a, b) => a.name.localeCompare(b.name))) {
+            var option = document.createElement("option");
+            option.setAttribute("value", item.id);
+            option.innerText = item.name;
+
+            if (item.selected) {
+                option.setAttribute("selected", true);
+            } else {
+                option.removeAttribute("selected");
+            }
+
+            select.appendChild(option);
         }
     }
 
-    function populateDataList(datalist, ingredients) {
-        for (const item of ingredients) {
-            const option = document.createElement("option");
-            option.setAttribute("value", item.name);
-            datalist.appendChild(option);
+    function syncSelection(collection, options) {
+        options.forEach(option => {
+            const ingredient = collection.find(i => i.id === Number(option.value));
+            if (ingredient !== undefined) {
+                ingredient.selected = option.selected;
+            }
+        });
+    }
+
+    function setSubmitButtonDisabledState(isDisabled) {
+        if (isDisabled) {
+            submitButton.setAttribute("disabled", true);
+        } else {
+            submitButton.removeAttribute("disabled");
         }
     }
 
-    populateDataList(dataList, ingredients);
-
+    populateSelect(selectElement, ingredients);
 })();

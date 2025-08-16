@@ -1,5 +1,4 @@
-﻿using Alchemy.BusinessLogic.Contracts;
-using Alchemy.DataModel;
+﻿using Alchemy.DataModel;
 using Alchemy.DataModel.Entities;
 
 namespace Alchemy.BusinessLogic.Services;
@@ -13,12 +12,13 @@ public class IngredientsRepository : IIngredientsRepository
         _context = alchemyContext ?? throw new ArgumentNullException(nameof(alchemyContext));
     }
 
-    public IEnumerable<Ingredient> GetAll()
+    public IEnumerable<Ingredient> List()
     {
-        return _context.Ingredients;
+        return _context.Ingredients
+            .OrderBy(i => i.Name);
     }
 
-    public Ingredient Get(int ingredientId)
+    public Ingredient? Get(int ingredientId)
     {
         return _context.Ingredients
             .FirstOrDefault(ingredient => ingredient.Id == ingredientId);

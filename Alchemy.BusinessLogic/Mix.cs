@@ -4,6 +4,6 @@ namespace Alchemy.BusinessLogic;
 
 public class Mix
 {
-    public Effect Effect { get; set; }
-    public IEnumerable<Ingredient> Ingredients { get; set; }
+    public Effect Effect { get; set; } = null!;
+    public IEnumerable<Ingredient> Ingredients { get; set; } = null!;
 }
