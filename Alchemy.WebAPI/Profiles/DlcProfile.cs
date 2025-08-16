@@ -1,13 +1,12 @@
-﻿using AutoMapper;
-using Alchemy.DataModel.Entities;
+﻿using Alchemy.DataModel.Entities;
+using AutoMapper;
 
-namespace Alchemy.WebAPI.Profiles
+namespace Alchemy.WebAPI.Profiles;
+
+public class DlcProfile : Profile
 {
-    public class DlcProfile : Profile
+    public DlcProfile()
     {
-        public DlcProfile()
-        {
-            CreateMap<Dlc, Models.Dlc>();
-        }
+        CreateMap<Dlc, Models.Dlc>();
     }
 }

@@ -1,14 +1,12 @@
-﻿using Alchemy.WebAPI.Models;
+﻿using Alchemy.DataModel.Entities;
 using AutoMapper;
 
-namespace Alchemy.WebAPI.Profiles
+namespace Alchemy.WebAPI.Profiles;
+
+public class EffectProfile : Profile
 {
-    public class EffectProfile : Profile
+    public EffectProfile()
     {
-        public EffectProfile()
-        {
-            CreateMap<Alchemy.DataModel.Entities.Effect, Effect>();
-            CreateMap<Alchemy.DataModel.Entities.Effect, EffectLimited>();
-        }
+        CreateMap<Effect, Models.Effect>();
     }
 }

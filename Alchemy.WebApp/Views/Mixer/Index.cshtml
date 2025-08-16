@@ -1,0 +1,33 @@
+﻿@model ItemsSelection
+@{ ViewData["Title"] = "Mezclador"; }
+
+<h2>Mezclador</h2>
+
+<datalist id="readable-ingredients"></datalist>
+<input id="ingredients" type="hidden" value="@ViewBag.IngredientsAsJson">
+
+<div class="mb-3">
+    <label class="form-label" for="ingredients-input">Ingredientes disponibles</label>
+    <input class="form-control" id="ingredients-input" list="readable-ingredients">
+
+    <div class="mt-1">
+        <button class="btn btn-success" id="add-ingredient">Agregar</button>
+    </div>
+</div>
+
+<form method="post" asp-controller="Mixer" asp-action="Index">
+    <div class="mb-3">
+        <label class="form-label" asp-for="Ingredients">Ingredientes seleccionados</label>
+        <select class="form-select" asp-for="Ingredients"></select>
+    </div>
+    <div class="mb-3 text-danger" asp-validation-summary="All"></div>
+
+    <div class="mt-1">
+        <input type="submit" class="btn btn-primary" value="¡Mezclar!">
+    </div>
+</form>
+
+@section Scripts
+{
+    <script src="~/js/mixer.js"></script>
+}

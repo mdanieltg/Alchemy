@@ -1,28 +1,14 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
+﻿namespace Alchemy.DataModel.Entities;
 
-namespace Alchemy.DataModel.Entities
+public class Ingredient
 {
-    [DebuggerDisplay("Name: {Name}")]
-    public class Ingredient
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Weight { get; set; }
+    public int BaseValue { get; set; }
+    public string Obtaining { get; set; }
+    public int? DlcId { get; set; }
 
-        [Required]
-        [MaxLength(23)]
-        public string Name { get; set; }
-
-        public double Weight { get; set; }
-
-        public int BaseValue { get; set; }
-
-        [MaxLength(92)]
-        public string Obtaining { get; set; }
-
-        public int? DlcId { get; set; }
-
-        public Dlc Dlc { get; set; }
-        public ICollection<Effect> Effects { get; set; } = new HashSet<Effect>();
-    }
+    public Dlc Dlc { get; set; }
+    public ICollection<Effect> Effects { get; set; } = new HashSet<Effect>();
 }

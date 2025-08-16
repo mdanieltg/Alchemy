@@ -1,57 +1,57 @@
-Effect
-Cure Disease
-Cure Poison
-Damage Health
-Damage Magicka
-Damage Magicka Regen
-Damage Stamina
-Damage Stamina Regen
-Fear
-Fortify Alteration
-Fortify Barter
-Fortify Block
-Fortify Carry Weight
-Fortify Conjuration
-Fortify Destruction
-Fortify Enchanting
-Fortify Health
-Fortify Heavy Armor
-Fortify Illusion
-Fortify Light Armor
-Fortify Lockpicking
-Fortify Magicka
-Fortify Marksman
-Fortify One-Handed
-Fortify Pickpocket
-Fortify Restoration
-Fortify Smithing
-Fortify Sneak
-Fortify Stamina
-Fortify Two-Handed
-Frenzy
-Invisibility
-Lingering Damage Health
-Lingering Damage Magicka
-Lingering Damage Stamina
-Paralysis
-Ravage Health
-Ravage Magicka
-Ravage Stamina
-Regenerate Health
-Regenerate Magicka
-Regenerate Stamina
-Resist Fire
-Resist Frost
-Resist Magic
-Resist Poison
-Resist Shock
-Restore Health
-Restore Magicka
-Restore Stamina
-Slow
-Waterbreathing
-Weakness to Fire
-Weakness to Frost
-Weakness to Magic
-Weakness to Poison
-Weakness to Shock
+"Id","Name"
+"1","Damage Health"
+"2","Invisibility"
+"3","Lingering Damage Health"
+"4","Lingering Damage Magicka"
+"5","Lingering Damage Stamina"
+"6","Paralysis"
+"7","Ravage Health"
+"8","Ravage Magicka"
+"9","Ravage Stamina"
+"10","Regenerate Health"
+"11","Regenerate Magicka"
+"12","Regenerate Stamina"
+"13","Frenzy"
+"14","Resist Fire"
+"15","Resist Magic"
+"16","Resist Poison"
+"17","Resist Shock"
+"18","Restore Health"
+"19","Restore Magicka"
+"20","Restore Stamina"
+"21","Slow"
+"22","Waterbreathing"
+"23","Weakness to Fire"
+"24","Weakness to Frost"
+"25","Weakness to Magic"
+"26","Resist Frost"
+"27","Fortify Two-Handed"
+"28","Fortify Stamina"
+"29","Fortify Sneak"
+"30","Cure Poison"
+"31","Cure Disease"
+"32","Damage Magicka"
+"33","Damage Magicka Regen"
+"34","Damage Stamina"
+"35","Damage Stamina Regen"
+"36","Fear"
+"37","Fortify Alteration"
+"38","Fortify Barter"
+"39","Fortify Block"
+"40","Fortify Carry Weight"
+"41","Fortify Conjuration"
+"42","Fortify Destruction"
+"43","Fortify Enchanting"
+"44","Fortify Health"
+"45","Fortify Heavy Armor"
+"46","Fortify Illusion"
+"47","Fortify Light Armor"
+"48","Fortify Lockpicking"
+"49","Fortify Magicka"
+"50","Fortify Marksman"
+"51","Fortify One-Handed"
+"52","Fortify Pickpocket"
+"53","Fortify Restoration"
+"54","Fortify Smithing"
+"55","Weakness to Poison"
+"56","Weakness to Shock"

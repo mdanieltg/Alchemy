@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Ingredient>
+@{ ViewData["Title"] = "Ingredientes"; }
+
+<h2>Ingredientes</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Peso</th>
+        <th>Valor base</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var ingredient in Model)
+    {
+        <tr>
+            <th>
+                <a asp-action="Detail" asp-route-ingredientId="@ingredient.Id">@ingredient.Name</a>
+            </th>
+            <td>@ingredient.Weight</td>
+            <td>@ingredient.BaseValue</td>
+        </tr>
+    }
+    </tbody>
+</table>

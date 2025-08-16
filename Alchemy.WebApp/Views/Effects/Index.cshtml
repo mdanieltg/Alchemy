@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Effect>
+@{ ViewData["Title"] = "Efectos"; }
+
+<h2>Efectos</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var effect in Model)
+    {
+        <tr>
+            <th>
+                <a asp-action="Detail" asp-route-effectId="@effect.Id">@effect.Name</a>
+            </th>
+        </tr>
+    }
+    </tbody>
+</table>
