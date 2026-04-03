@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Alchemy.DataModel\Alchemy.DataModel.csproj" />
+        <ProjectReference Include="..\Alchemy.DataModel\Alchemy.DataModel.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,8 @@
-﻿namespace Alchemy.WebAPI.Models;
+﻿using System.Diagnostics;
 
+namespace Alchemy.WebAPI.Models;
+
+[DebuggerDisplay("Effect: {Name}")]
 public class EffectLimited
 {
     public int Id { get; set; }
