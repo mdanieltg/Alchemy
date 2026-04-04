@@ -1,5 +1,5 @@
 ﻿using System.Net.Mime;
-using Alchemy.BusinessLogic.Repositories;
+using Alchemy.Application.Repositories;
 using Alchemy.DataModel.Entities;
 using Alchemy.WebAPI.Models;
 using MapsterMapper;

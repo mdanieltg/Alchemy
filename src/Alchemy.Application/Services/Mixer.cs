@@ -1,9 +1,9 @@
-﻿using Alchemy.BusinessLogic.Models;
-using Alchemy.BusinessLogic.Repositories;
+﻿using Alchemy.Application.Models;
+using Alchemy.Application.Repositories;
 using Alchemy.DataModel;
 using Alchemy.DataModel.Entities;
 
-namespace Alchemy.BusinessLogic.Services;
+namespace Alchemy.Application.Services;
 
 public class Mixer(IRepository<Ingredient> ingredientsRepository, DataStore dataStore)
     : IMixer

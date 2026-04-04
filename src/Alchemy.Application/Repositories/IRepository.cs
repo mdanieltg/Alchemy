@@ -1,4 +1,4 @@
-﻿namespace Alchemy.BusinessLogic.Repositories;
+﻿namespace Alchemy.Application.Repositories;
 
 public interface IRepository<out T>
 {

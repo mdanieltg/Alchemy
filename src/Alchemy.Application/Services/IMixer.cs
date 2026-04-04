@@ -1,6 +1,6 @@
-﻿using Alchemy.BusinessLogic.Models;
+﻿using Alchemy.Application.Models;
 
-namespace Alchemy.BusinessLogic.Services;
+namespace Alchemy.Application.Services;
 
 public interface IMixer
 {

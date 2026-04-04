@@ -1,8 +1,8 @@
-﻿using Alchemy.BusinessLogic.Models;
+﻿using Alchemy.Application.Models;
 using Alchemy.DataModel;
 using Alchemy.DataModel.Entities;
 
-namespace Alchemy.BusinessLogic.Repositories;
+namespace Alchemy.Application.Repositories;
 
 public class IngredientsRepository(DataStore dataStore) : IRepository<Ingredient>, IPagedRepository<Ingredient>
 {

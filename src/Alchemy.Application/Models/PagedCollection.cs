@@ -1,4 +1,4 @@
-﻿namespace Alchemy.BusinessLogic.Models;
+﻿namespace Alchemy.Application.Models;
 
 public class PagedCollection<T>
 {

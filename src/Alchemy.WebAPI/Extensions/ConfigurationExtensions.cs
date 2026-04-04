@@ -1,5 +1,5 @@
-using Alchemy.BusinessLogic.Repositories;
-using Alchemy.BusinessLogic.Services;
+using Alchemy.Application.Repositories;
+using Alchemy.Application.Services;
 using Alchemy.DataModel.Entities;
 using Alchemy.WebAPI.Models;
 using Mapster;

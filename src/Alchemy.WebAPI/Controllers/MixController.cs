@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
-using Alchemy.BusinessLogic.Models;
-using Alchemy.BusinessLogic.Services;
+using Alchemy.Application.Models;
+using Alchemy.Application.Services;
 using Alchemy.WebAPI.Models;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;

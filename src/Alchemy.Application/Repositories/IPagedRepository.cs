@@ -1,6 +1,6 @@
-﻿using Alchemy.BusinessLogic.Models;
+﻿using Alchemy.Application.Models;
 
-namespace Alchemy.BusinessLogic.Repositories;
+namespace Alchemy.Application.Repositories;
 
 public interface IPagedRepository<T>
 {

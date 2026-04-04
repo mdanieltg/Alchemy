@@ -1,7 +1,7 @@
 ﻿using Alchemy.DataModel;
 using Alchemy.DataModel.Entities;
 
-namespace Alchemy.BusinessLogic.Repositories;
+namespace Alchemy.Application.Repositories;
 
 public class DownloadableContentRepository(DataStore dataStore) : IRepository<DownloadableContent>
 {

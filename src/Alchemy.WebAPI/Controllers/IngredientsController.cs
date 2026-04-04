@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
-using Alchemy.BusinessLogic.Models;
-using Alchemy.BusinessLogic.Repositories;
+using Alchemy.Application.Models;
+using Alchemy.Application.Repositories;
 using Alchemy.DataModel.Entities;
 using Alchemy.WebAPI.Models;
 using Alchemy.WebAPI.Validation;

@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Net;
 using System.Security.Authentication;
-using Alchemy.BusinessLogic.Exceptions;
+using Alchemy.Application.Exceptions;
 using Alchemy.WebAPI.CsvModels;
 using CsvHelper;
 using CsvHelper.Configuration;
