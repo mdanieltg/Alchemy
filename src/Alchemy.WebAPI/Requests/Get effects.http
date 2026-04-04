@@ -1,0 +1,22 @@
+GET http://{{server}}/api/ingredients/{{ingredientId}}
+Accept: application/json
+
+###
+GET http://{{server}}/api/ingredients
+Accept: application/json
+
+### 
+GET http://{{server}}/api/effects
+Accept: application/json
+
+###
+GET http://{{server}}/api/effects/{{effectId}}
+Accept: application/json
+
+### 
+GET http://{{server}}/api/dlcs
+Accept: application/json
+
+###
+GET http://{{server}}/api/dlcs/{{dlcId}}
+Accept: application/json
