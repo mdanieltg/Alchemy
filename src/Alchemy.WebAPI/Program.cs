@@ -27,7 +27,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Alchemy.WebAPI v1"));
-    app.UseCors("development");
 }
 else
 {
@@ -35,9 +34,9 @@ else
     {
         ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
     });
-    app.UseCors();
 }
 
+app.UseCors();
 app.UseRateLimiter();
 app.UseAuthorization();
 app.MapControllers()
