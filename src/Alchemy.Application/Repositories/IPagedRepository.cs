@@ -5,5 +5,5 @@ namespace Alchemy.Application.Repositories;
 public interface IPagedRepository<T>
 {
     T? Get(int id);
-    PagedCollection<T> List(int limit, int offset);
+    PagedCollection<T> List(int sampleSize, int offset);
 }

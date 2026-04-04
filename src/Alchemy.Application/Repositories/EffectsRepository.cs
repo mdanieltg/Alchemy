@@ -8,19 +8,19 @@ public class EffectsRepository(DataStore dataStore) : IRepository<Effect>, IPage
 {
     private readonly DataStore _dataStore = dataStore;
 
-    public PagedCollection<Effect> List(int limit, int offset)
+    public PagedCollection<Effect> List(int sampleSize, int offset)
     {
         IEnumerable<Effect> effects = _dataStore.Effects
             .OrderBy(effect => effect.Name)
-            .Skip((offset - 1) * limit)
-            .Take(limit);
+            .Skip((offset - 1) * sampleSize)
+            .Take(sampleSize);
 
-        var lastPage = (int) Math.Ceiling(_dataStore.Effects.Count / (double) limit);
+        var lastPage = (int) Math.Ceiling(_dataStore.Effects.Count / (double) sampleSize);
 
         return new PagedCollection<Effect>
         {
-            Limit = limit,
-            Offset = offset,
+            PageSize = sampleSize,
+            CurrentPage = offset,
             PreviousPage = offset <= lastPage && offset > 1 ? offset - 1 : null,
             NextPage = offset < lastPage && offset >= 1 ? offset + 1 : null,
             LastPage = lastPage,

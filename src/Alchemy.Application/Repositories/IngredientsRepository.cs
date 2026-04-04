@@ -8,19 +8,19 @@ public class IngredientsRepository(DataStore dataStore) : IRepository<Ingredient
 {
     private readonly DataStore _dataStore = dataStore;
 
-    public PagedCollection<Ingredient> List(int limit, int offset)
+    public PagedCollection<Ingredient> List(int sampleSize, int offset)
     {
         IEnumerable<Ingredient> ingredients = _dataStore.Ingredients
             .OrderBy(ingredient => ingredient.Name)
-            .Skip((offset - 1) * limit)
-            .Take(limit);
+            .Skip((offset - 1) * sampleSize)
+            .Take(sampleSize);
 
-        var lastPage = (int) Math.Ceiling(_dataStore.Ingredients.Count / (double) limit);
+        var lastPage = (int) Math.Ceiling(_dataStore.Ingredients.Count / (double) sampleSize);
 
         return new PagedCollection<Ingredient>
         {
-            Limit = limit,
-            Offset = offset,
+            PageSize = sampleSize,
+            CurrentPage = offset,
             PreviousPage = offset <= lastPage && offset > 1 ? offset - 1 : null,
             NextPage = offset < lastPage && offset >= 1 ? offset + 1 : null,
             LastPage = lastPage,
