@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="src/Alchemy.BusinessLogic/Alchemy.BusinessLogic.csproj" />
+  <Project Path="src/Alchemy.DataModel/Alchemy.DataModel.csproj" />
+  <Project Path="src/Alchemy.WebAPI/Alchemy.WebAPI.csproj" />
+</Solution>
