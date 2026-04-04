@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 CsvHelperService csvHelper = new(builder.Configuration);
-DataTransformService dataTransform = new(csvHelper);
-DataStore dataStore = await dataTransform.CreateDataStoreAsync();
+DataStore dataStore = await DataTransformService.CreateDataStoreAsync(csvHelper);
 
 // Services
 builder.Services.AddControllers(options => options.ReturnHttpNotAcceptable = true);

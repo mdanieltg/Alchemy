@@ -1,6 +1,4 @@
 ﻿using System.Globalization;
-using System.Net;
-using System.Security.Authentication;
 using Alchemy.Application.Exceptions;
 using Alchemy.WebAPI.CsvModels;
 using CsvHelper;
@@ -8,106 +6,48 @@ using CsvHelper.Configuration;
 
 namespace Alchemy.WebAPI.Services;
 
-public class CsvHelperService
+public class CsvHelperService(IConfiguration configuration)
 {
     private const string CsvFileDlc = "CsvFiles:DLC";
     private const string CsvFileEffects = "CsvFiles:Effects";
     private const string CsvFileIngredients = "CsvFiles:Ingredients";
     private const string CsvFileIngredientEffects = "CsvFiles:IngredientEffects";
 
-    private readonly CsvConfiguration _configuration;
-    private readonly string _dlcFileLocation;
-    private readonly string _effectsFileLocation;
-    private readonly HttpClient _httpClient;
-    private readonly string _ingredientEffectsFileLocation;
-    private readonly string _ingredientsFileLocation;
-
-    public CsvHelperService(IConfiguration configuration)
+    private readonly CsvConfiguration _configuration = new(CultureInfo.InvariantCulture)
     {
-        _dlcFileLocation = configuration.GetSection(CsvFileDlc).Value ??
-                           throw new InvalidFileLocationException(CsvFileDlc);
-        _effectsFileLocation = configuration.GetSection(CsvFileEffects).Value ??
-                               throw new InvalidFileLocationException(CsvFileEffects);
-        _ingredientsFileLocation = configuration.GetSection(CsvFileIngredients).Value ??
-                                   throw new InvalidFileLocationException(CsvFileIngredients);
-        _ingredientEffectsFileLocation = configuration.GetSection(CsvFileIngredientEffects).Value ??
-                                         throw new InvalidFileLocationException(CsvFileIngredientEffects);
+        HasHeaderRecord = true,
+        Delimiter = ",",
+        NewLine = "\n"
+    };
 
-        if (string.IsNullOrWhiteSpace(_dlcFileLocation))
-            throw new ArgumentException("DLC file path missing or empty");
+    private readonly string _dlcFile = configuration[CsvFileDlc] ?? throw new InvalidFileLocationException(CsvFileDlc);
 
-        if (string.IsNullOrWhiteSpace(_effectsFileLocation))
-            throw new ArgumentException("Effects file path missing or empty");
+    private readonly string _effectFile = configuration[CsvFileEffects] ??
+                                          throw new InvalidFileLocationException(CsvFileEffects);
 
-        if (string.IsNullOrWhiteSpace(_ingredientsFileLocation))
-            throw new ArgumentException("Ingredients file path missing or empty");
+    private readonly string _ingredientsFile = configuration[CsvFileIngredients] ??
+                                               throw new InvalidFileLocationException(CsvFileIngredients);
 
-        if (string.IsNullOrWhiteSpace(_ingredientEffectsFileLocation))
-            throw new ArgumentException("IngredientEffects file path missing or empty");
+    private readonly string _ingredientEffectsFile = configuration[CsvFileIngredientEffects] ??
+                                                     throw new InvalidFileLocationException(CsvFileIngredientEffects);
 
-        _configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            HasHeaderRecord = true,
-            Delimiter = ",",
-            NewLine = "\n"
-        };
+    private async ValueTask<IEnumerable<T>> ReadFile<T>(string fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(nameof(fileName));
 
-        _httpClient = new HttpClient(new HttpClientHandler
-        {
-            AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
-            SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13
-        });
+        await using FileStream fileStream = File.OpenRead(fileName);
+        using StreamReader streamReader = new(fileStream);
+        using CsvReader csvReader = new(streamReader, _configuration);
+        return [..csvReader.GetRecords<T>()];
     }
 
-    private async ValueTask<StreamReader> Fetch(string uri)
-    {
-        try
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(uri);
-            response.EnsureSuccessStatusCode();
+    public async ValueTask<IEnumerable<DlcDto>> GetDlcs() => await ReadFile<DlcDto>(_dlcFile);
 
-            Stream contentStream = await response.Content.ReadAsStreamAsync();
-            return new StreamReader(contentStream);
-        }
-        catch (HttpRequestException)
-        {
-            throw new UnreachableFileException(uri);
-        }
-    }
+    public async ValueTask<IEnumerable<IngredientDto>> GetIngredients() =>
+        await ReadFile<IngredientDto>(_ingredientsFile);
 
-    public async ValueTask<HashSet<DlcDto>> GetDlcs()
-    {
-        using StreamReader streamReader = await Fetch(_dlcFileLocation);
-        using var csvReader = new CsvReader(streamReader, _configuration);
+    public async ValueTask<IEnumerable<EffectDto>> GetEffects() => await ReadFile<EffectDto>(_effectFile);
 
-        IEnumerable<DlcDto> dlcs = csvReader.GetRecords<DlcDto>();
-        return [..dlcs];
-    }
-
-    public async ValueTask<HashSet<EffectDto>> GetEffects()
-    {
-        using StreamReader streamReader = await Fetch(_effectsFileLocation);
-        using var csvReader = new CsvReader(streamReader, _configuration);
-
-        IEnumerable<EffectDto> effects = csvReader.GetRecords<EffectDto>();
-        return [..effects];
-    }
-
-    public async ValueTask<HashSet<IngredientDto>> GetIngredients()
-    {
-        using StreamReader streamReader = await Fetch(_ingredientsFileLocation);
-        using var csvReader = new CsvReader(streamReader, _configuration);
-
-        IEnumerable<IngredientDto> ingredients = csvReader.GetRecords<IngredientDto>();
-        return [..ingredients];
-    }
-
-    public async ValueTask<HashSet<IngredientsEffectsDto>> GetIngredientEffects()
-    {
-        using StreamReader streamReader = await Fetch(_ingredientEffectsFileLocation);
-        using var csvReader = new CsvReader(streamReader, _configuration);
-
-        IEnumerable<IngredientsEffectsDto> ingredientsEffects = csvReader.GetRecords<IngredientsEffectsDto>();
-        return [..ingredientsEffects];
-    }
+    public async ValueTask<IEnumerable<IngredientsEffectsDto>> GetIngredientEffects() =>
+        await ReadFile<IngredientsEffectsDto>(_ingredientEffectsFile);
 }

@@ -2,71 +2,25 @@
 using Alchemy.DataModel;
 using Alchemy.DataModel.Entities;
 using Alchemy.WebAPI.CsvModels;
+using Mapster;
 
 namespace Alchemy.WebAPI.Services;
 
-public class DataTransformService(CsvHelperService csvHelper)
+public static class DataTransformService
 {
-    private readonly CsvHelperService _csvHelper = csvHelper;
-
-    public async ValueTask<DataStore> CreateDataStoreAsync()
+    public static async ValueTask<DataStore> CreateDataStoreAsync(CsvHelperService csvHelper)
     {
-        HashSet<DlcDto> dlcDtos = await _csvHelper.GetDlcs();
-        HashSet<IngredientDto> ingredientDtos = await _csvHelper.GetIngredients();
-        HashSet<EffectDto> effectDtos = await _csvHelper.GetEffects();
-        HashSet<IngredientsEffectsDto> ingredientEffectsDtos = await _csvHelper.GetIngredientEffects();
-
-        ImmutableHashSet<DownloadableContent> downloadableContents = Transform(dlcDtos);
-        ImmutableHashSet<Effect> effects = Transform(effectDtos);
-        ImmutableHashSet<Ingredient> ingredients = Transform(ingredientDtos, downloadableContents);
-        ImmutableHashSet<IngredientsEffects> ingredientsEffects = Transform(ingredientEffectsDtos);
+        IEnumerable<DlcDto> dlcs = await csvHelper.GetDlcs();
+        IEnumerable<IngredientDto> ingredients = await csvHelper.GetIngredients();
+        IEnumerable<EffectDto> effects = await csvHelper.GetEffects();
+        IEnumerable<IngredientsEffectsDto> ingredientEffects = await csvHelper.GetIngredientEffects();
 
         return new DataStore
         {
-            Dlcs = downloadableContents,
-            Effects = effects,
-            Ingredients = ingredients,
-            IngredientsEffects = ingredientsEffects
+            Dlcs = dlcs.Adapt<IEnumerable<DownloadableContent>>().ToImmutableHashSet(),
+            Effects = effects.Adapt<IEnumerable<Effect>>().ToImmutableHashSet(),
+            Ingredients = ingredients.Adapt<IEnumerable<Ingredient>>().ToImmutableHashSet(),
+            IngredientsEffects = ingredientEffects.Adapt<IEnumerable<IngredientsEffects>>().ToImmutableHashSet()
         };
     }
-
-    private static ImmutableHashSet<DownloadableContent> Transform(IEnumerable<DlcDto> dlcs) =>
-        dlcs.Select(dlcDto => new DownloadableContent
-        {
-            Id = dlcDto.Id,
-            Name = dlcDto.Name
-        }).ToImmutableHashSet();
-
-    private static ImmutableHashSet<Effect> Transform(IEnumerable<EffectDto> effects) =>
-        effects.Select(effectDto =>
-            new Effect
-            {
-                Id = effectDto.Id,
-                Name = effectDto.Name
-            }
-        ).ToImmutableHashSet();
-
-    private static ImmutableHashSet<Ingredient> Transform(IEnumerable<IngredientDto> ingredients,
-        IReadOnlySet<DownloadableContent> dlcs) =>
-        ingredients.Select(ingredientDto =>
-            new Ingredient
-            {
-                Id = ingredientDto.Id,
-                Name = ingredientDto.Name,
-                BaseValue = ingredientDto.BaseValue,
-                Weight = ingredientDto.Weight,
-                Obtaining = ingredientDto.Obtaining,
-                DlcId = ingredientDto.DlcId,
-                Dlc = dlcs.FirstOrDefault(dlc => dlc.Id == ingredientDto.DlcId)
-            }
-        ).ToImmutableHashSet();
-
-    private static ImmutableHashSet<IngredientsEffects>
-        Transform(IEnumerable<IngredientsEffectsDto> ingredientsEffects) =>
-        ingredientsEffects.Select(dto => new IngredientsEffects
-            {
-                EffectId = dto.EffectId,
-                IngredientId = dto.IngredientId
-            }
-        ).ToImmutableHashSet();
 }
