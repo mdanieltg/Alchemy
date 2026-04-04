@@ -1,4 +1,13 @@
 <Solution>
+  <Folder Name="/alchemy_data/">
+    <File Path="alchemy_data\dlcs.csv"/>
+    <File Path="alchemy_data\effects.csv"/>
+    <File Path="alchemy_data\ingredients.csv"/>
+    <File Path="alchemy_data\ingredient_effects.csv"/>
+  </Folder>
+  <Folder Name="/ci/">
+    <File Path="ci\Dockerfile"/>
+  </Folder>
   <Project Path="src/Alchemy.BusinessLogic/Alchemy.BusinessLogic.csproj" />
   <Project Path="src/Alchemy.DataModel/Alchemy.DataModel.csproj" />
   <Project Path="src/Alchemy.WebAPI/Alchemy.WebAPI.csproj" />
