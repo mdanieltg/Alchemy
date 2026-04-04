@@ -17,7 +17,8 @@ builder.Services
     .AddRepositories()
     .AddServices()
     .AddSwagger()
-    .SetupCors(builder.Configuration);
+    .SetupCors(builder.Configuration)
+    .SetUpRateLimiter();
 
 WebApplication app = builder.Build();
 
@@ -37,7 +38,9 @@ else
     app.UseCors();
 }
 
+app.UseRateLimiter();
 app.UseAuthorization();
-app.MapControllers();
+app.MapControllers()
+    .RequireRateLimiting("fixed");
 
 app.Run();

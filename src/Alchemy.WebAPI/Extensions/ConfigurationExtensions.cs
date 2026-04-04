@@ -1,9 +1,11 @@
+using System.Threading.RateLimiting;
 using Alchemy.Application.Repositories;
 using Alchemy.Application.Services;
 using Alchemy.DataModel.Entities;
 using Alchemy.WebAPI.Models;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi;
 
 namespace Alchemy.WebAPI.Extensions;
@@ -35,6 +37,21 @@ public static class ConfigurationExtensions
             return services
                 .AddSingleton(config)
                 .AddScoped<IMapper, ServiceMapper>();
+        }
+
+        public IServiceCollection SetUpRateLimiter()
+        {
+            return services.AddRateLimiter(options =>
+            {
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+                options.AddFixedWindowLimiter("fixed", limiterOptions =>
+                {
+                    limiterOptions.PermitLimit = 10;
+                    limiterOptions.Window = TimeSpan.FromSeconds(30);
+                    limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                    limiterOptions.QueueLimit = 5;
+                });
+            });
         }
 
         public IServiceCollection AddSwagger()
