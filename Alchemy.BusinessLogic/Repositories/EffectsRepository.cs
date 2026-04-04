@@ -1,18 +1,12 @@
-﻿using Alchemy.DataModel;
-using Alchemy.Domain.Entities;
-using Alchemy.Domain.Models;
-using Alchemy.Domain.Repositories;
+﻿using Alchemy.BusinessLogic.Models;
+using Alchemy.DataModel;
+using Alchemy.DataModel.Entities;
 
 namespace Alchemy.BusinessLogic.Repositories;
 
-public class EffectsRepository : IRepository<Effect>, IPagedRepository<Effect>
+public class EffectsRepository(DataStore dataStore) : IRepository<Effect>, IPagedRepository<Effect>
 {
-    private readonly DataStore _dataStore;
-
-    public EffectsRepository(DataStore dataStore)
-    {
-        _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
-    }
+    private readonly DataStore _dataStore = dataStore;
 
     public PagedCollection<Effect> List(int limit, int offset)
     {

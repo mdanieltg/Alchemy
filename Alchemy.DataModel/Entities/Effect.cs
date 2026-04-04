@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Alchemy.Domain.Entities;
+namespace Alchemy.DataModel.Entities;
 
 [DebuggerDisplay("Effect: {Name}")]
 public class Effect

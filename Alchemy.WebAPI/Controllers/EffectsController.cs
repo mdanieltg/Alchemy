@@ -1,10 +1,10 @@
 ﻿using System.Net.Mime;
-using Alchemy.BusinessLogic.Validation;
-using Alchemy.Domain.Entities;
-using Alchemy.Domain.Models;
-using Alchemy.Domain.Repositories;
+using Alchemy.BusinessLogic.Models;
+using Alchemy.BusinessLogic.Repositories;
+using Alchemy.DataModel.Entities;
 using Alchemy.WebAPI.Models;
-using AutoMapper;
+using Alchemy.WebAPI.Validation;
+using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Alchemy.WebAPI.Controllers;
@@ -12,16 +12,10 @@ namespace Alchemy.WebAPI.Controllers;
 [ApiController]
 [Route("api/effects")]
 [Produces(MediaTypeNames.Application.Json)]
-public class EffectsController : ControllerBase
+public class EffectsController(IPagedRepository<Effect> effectsRepository, IMapper mapper) : ControllerBase
 {
-    private readonly IPagedRepository<Effect> _effects;
-    private readonly IMapper _mapper;
-
-    public EffectsController(IPagedRepository<Effect> effectsRepository, IMapper mapper)
-    {
-        _effects = effectsRepository ?? throw new ArgumentNullException(nameof(effectsRepository));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-    }
+    private readonly IPagedRepository<Effect> _effects = effectsRepository;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet(Name = "ListEffects")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,7 +47,7 @@ public class EffectsController : ControllerBase
         return _mapper.Map<IEnumerable<EffectLimited>>(pagedCollection.Collection);
     }
 
-    [HttpGet("{effectId}")]
+    [HttpGet("{effectId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<EffectDto> GetEffect(int effectId)

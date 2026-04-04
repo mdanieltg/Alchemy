@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Alchemy.Domain.Entities;
+namespace Alchemy.DataModel.Entities;
 
 [DebuggerDisplay("DLC: {Name}")]
 public class DownloadableContent

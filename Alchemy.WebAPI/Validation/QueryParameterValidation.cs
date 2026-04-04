@@ -1,4 +1,4 @@
-﻿namespace Alchemy.BusinessLogic.Validation;
+﻿namespace Alchemy.WebAPI.Validation;
 
 public static class QueryParameterValidation
 {

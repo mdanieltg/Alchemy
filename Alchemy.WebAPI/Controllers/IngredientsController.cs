@@ -1,10 +1,10 @@
 ﻿using System.Net.Mime;
-using Alchemy.BusinessLogic.Validation;
-using Alchemy.Domain.Entities;
-using Alchemy.Domain.Models;
-using Alchemy.Domain.Repositories;
+using Alchemy.BusinessLogic.Models;
+using Alchemy.BusinessLogic.Repositories;
+using Alchemy.DataModel.Entities;
 using Alchemy.WebAPI.Models;
-using AutoMapper;
+using Alchemy.WebAPI.Validation;
+using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Alchemy.WebAPI.Controllers;
@@ -12,16 +12,11 @@ namespace Alchemy.WebAPI.Controllers;
 [ApiController]
 [Route("api/ingredients")]
 [Produces(MediaTypeNames.Application.Json)]
-public class IngredientsController : ControllerBase
+public class IngredientsController(IPagedRepository<Ingredient> ingredientsRepository, IMapper mapper)
+    : ControllerBase
 {
-    private readonly IPagedRepository<Ingredient> _ingredients;
-    private readonly IMapper _mapper;
-
-    public IngredientsController(IPagedRepository<Ingredient> ingredientsRepository, IMapper mapper)
-    {
-        _ingredients = ingredientsRepository ?? throw new ArgumentNullException(nameof(ingredientsRepository));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-    }
+    private readonly IPagedRepository<Ingredient> _ingredients = ingredientsRepository;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,7 +48,7 @@ public class IngredientsController : ControllerBase
         return _mapper.Map<IEnumerable<IngredientLimited>>(pagedCollection.Collection);
     }
 
-    [HttpGet("{ingredientId}")]
+    [HttpGet("{ingredientId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<IngredientDto> GetIngredient(int ingredientId)

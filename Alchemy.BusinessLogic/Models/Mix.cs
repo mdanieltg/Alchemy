@@ -1,6 +1,6 @@
-﻿using Alchemy.Domain.Entities;
+﻿using Alchemy.DataModel.Entities;
 
-namespace Alchemy.Domain.Models;
+namespace Alchemy.BusinessLogic.Models;
 
 public class Mix
 {

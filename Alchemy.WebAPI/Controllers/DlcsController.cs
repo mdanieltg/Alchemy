@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
-using Alchemy.Domain.Entities;
-using Alchemy.Domain.Repositories;
+using Alchemy.BusinessLogic.Repositories;
+using Alchemy.DataModel.Entities;
 using Alchemy.WebAPI.Models;
-using AutoMapper;
+using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Alchemy.WebAPI.Controllers;
@@ -10,16 +10,11 @@ namespace Alchemy.WebAPI.Controllers;
 [ApiController]
 [Route("api/dlcs")]
 [Produces(MediaTypeNames.Application.Json)]
-public class DlcsController : ControllerBase
+public class DlcsController(IRepository<DownloadableContent> dlcRepository, IMapper mapper)
+    : ControllerBase
 {
-    private readonly IRepository<DownloadableContent> _dlcs;
-    private readonly IMapper _mapper;
-
-    public DlcsController(IRepository<DownloadableContent> dlcRepository, IMapper mapper)
-    {
-        _dlcs = dlcRepository ?? throw new ArgumentNullException(nameof(dlcRepository));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-    }
+    private readonly IRepository<DownloadableContent> _dlcs = dlcRepository;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -28,7 +23,7 @@ public class DlcsController : ControllerBase
         return _mapper.Map<IEnumerable<DownloadableContentDto>>(_dlcs.List());
     }
 
-    [HttpGet("{dlcId}")]
+    [HttpGet("{dlcId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<DownloadableContentDto> GetDlc(int dlcId)

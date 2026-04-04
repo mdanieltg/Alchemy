@@ -1,18 +1,13 @@
 ﻿using System.Collections.Immutable;
 using Alchemy.DataModel;
-using Alchemy.Domain.Entities;
+using Alchemy.DataModel.Entities;
 using Alchemy.WebAPI.CsvModels;
 
 namespace Alchemy.WebAPI.Services;
 
-public class DataTransformService
+public class DataTransformService(CsvHelperService csvHelper)
 {
-    private readonly CsvHelperService _csvHelper;
-
-    public DataTransformService(CsvHelperService csvHelper)
-    {
-        _csvHelper = csvHelper;
-    }
+    private readonly CsvHelperService _csvHelper = csvHelper;
 
     public async ValueTask<DataStore> CreateDataStoreAsync()
     {

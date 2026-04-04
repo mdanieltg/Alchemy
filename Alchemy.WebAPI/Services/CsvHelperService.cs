@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Net;
 using System.Security.Authentication;
-using Alchemy.Domain.Exceptions;
+using Alchemy.BusinessLogic.Exceptions;
 using Alchemy.WebAPI.CsvModels;
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -13,12 +13,12 @@ public class CsvHelperService
     private const string CsvFileDlc = "CsvFiles:DLC";
     private const string CsvFileEffects = "CsvFiles:Effects";
     private const string CsvFileIngredients = "CsvFiles:Ingredients";
-    private const string CsvFileIngredienteffects = "CsvFiles:IngredientEffects";
+    private const string CsvFileIngredientEffects = "CsvFiles:IngredientEffects";
 
     private readonly CsvConfiguration _configuration;
-    private readonly HttpClient _httpClient;
     private readonly string _dlcFileLocation;
     private readonly string _effectsFileLocation;
+    private readonly HttpClient _httpClient;
     private readonly string _ingredientEffectsFileLocation;
     private readonly string _ingredientsFileLocation;
 
@@ -30,8 +30,8 @@ public class CsvHelperService
                                throw new InvalidFileLocationException(CsvFileEffects);
         _ingredientsFileLocation = configuration.GetSection(CsvFileIngredients).Value ??
                                    throw new InvalidFileLocationException(CsvFileIngredients);
-        _ingredientEffectsFileLocation = configuration.GetSection(CsvFileIngredienteffects).Value ??
-                                         throw new InvalidFileLocationException(CsvFileIngredienteffects);
+        _ingredientEffectsFileLocation = configuration.GetSection(CsvFileIngredientEffects).Value ??
+                                         throw new InvalidFileLocationException(CsvFileIngredientEffects);
 
         if (string.IsNullOrWhiteSpace(_dlcFileLocation))
             throw new ArgumentException("DLC file path missing or empty");
@@ -81,7 +81,7 @@ public class CsvHelperService
         using var csvReader = new CsvReader(streamReader, _configuration);
 
         IEnumerable<DlcDto> dlcs = csvReader.GetRecords<DlcDto>();
-        return new HashSet<DlcDto>(dlcs);
+        return [..dlcs];
     }
 
     public async ValueTask<HashSet<EffectDto>> GetEffects()
@@ -90,7 +90,7 @@ public class CsvHelperService
         using var csvReader = new CsvReader(streamReader, _configuration);
 
         IEnumerable<EffectDto> effects = csvReader.GetRecords<EffectDto>();
-        return new HashSet<EffectDto>(effects);
+        return [..effects];
     }
 
     public async ValueTask<HashSet<IngredientDto>> GetIngredients()
@@ -99,7 +99,7 @@ public class CsvHelperService
         using var csvReader = new CsvReader(streamReader, _configuration);
 
         IEnumerable<IngredientDto> ingredients = csvReader.GetRecords<IngredientDto>();
-        return new HashSet<IngredientDto>(ingredients);
+        return [..ingredients];
     }
 
     public async ValueTask<HashSet<IngredientsEffectsDto>> GetIngredientEffects()
@@ -108,6 +108,6 @@ public class CsvHelperService
         using var csvReader = new CsvReader(streamReader, _configuration);
 
         IEnumerable<IngredientsEffectsDto> ingredientsEffects = csvReader.GetRecords<IngredientsEffectsDto>();
-        return new HashSet<IngredientsEffectsDto>(ingredientsEffects);
+        return [..ingredientsEffects];
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Alchemy.Domain.Entities;
+﻿namespace Alchemy.DataModel.Entities;
 
 public class IngredientsEffects
 {

@@ -1,21 +1,15 @@
-﻿using Alchemy.DataModel;
-using Alchemy.Domain.Entities;
-using Alchemy.Domain.Models;
-using Alchemy.Domain.Repositories;
-using Alchemy.Domain.Services;
+﻿using Alchemy.BusinessLogic.Models;
+using Alchemy.BusinessLogic.Repositories;
+using Alchemy.DataModel;
+using Alchemy.DataModel.Entities;
 
 namespace Alchemy.BusinessLogic.Services;
 
-public class Mixer : IMixer
+public class Mixer(IRepository<Ingredient> ingredientsRepository, DataStore dataStore)
+    : IMixer
 {
-    private readonly IRepository<Ingredient> _ingredients;
-    private readonly DataStore _dataStore;
-
-    public Mixer(IRepository<Ingredient> ingredientsRepository, DataStore dataStore)
-    {
-        _ingredients = ingredientsRepository ?? throw new ArgumentNullException(nameof(ingredientsRepository));
-        _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
-    }
+    private readonly DataStore _dataStore = dataStore;
+    private readonly IRepository<Ingredient> _ingredients = ingredientsRepository;
 
     public List<Mix> Mix(IReadOnlySet<int> ingredientIds)
     {
@@ -39,7 +33,7 @@ public class Mixer : IMixer
                 if (effectIngredientsDictionary.ContainsKey(effect))
                     effectIngredientsDictionary[effect].Add(ingredient);
                 else
-                    effectIngredientsDictionary.Add(effect, new List<Ingredient> { ingredient });
+                    effectIngredientsDictionary.Add(effect, [ingredient]);
         }
 
         return effectIngredientsDictionary

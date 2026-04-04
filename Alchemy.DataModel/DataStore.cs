@@ -1,4 +1,4 @@
-﻿using Alchemy.Domain.Entities;
+﻿using Alchemy.DataModel.Entities;
 
 namespace Alchemy.DataModel;
 
